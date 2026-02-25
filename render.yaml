@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: wellnix-api
+    runtime: python
+    buildCommand: pip install -r requirements-render.txt
+    startCommand: gunicorn gateway.app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.6"
+      - key: FLASK_SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        sync: false

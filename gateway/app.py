@@ -114,7 +114,11 @@ def create_app(config_name='development'):
     )
 
     frontend_url = os.environ.get('FRONTEND_URL', 'http://localhost:3000')
-    CORS(app, resources={r"/api/*": {"origins": ["*", frontend_url]}}, supports_credentials=True)
+    allowed_origins = [
+        'http://localhost:3000',
+        frontend_url,
+    ]
+    CORS(app, resources={r"/api/*": {"origins": allowed_origins}}, supports_credentials=True)
 
     @login_manager.user_loader
     def load_user(user_id):
