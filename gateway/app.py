@@ -32,6 +32,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from services.shared.database.models import db, User, ScanHistory, WorkoutSession, init_db
 from gateway.auth_jwt import generate_tokens, decode_token, jwt_required, jwt_optional
+from gateway.nutri_ai_lite import extract_nutrition_from_image, calculate_health_metrics, generate_score
 
 login_manager = LoginManager()
 oauth = OAuth()
@@ -538,33 +539,41 @@ def _register_api_services(app):
     def api_health():
         return jsonify({'status': 'ok', 'service': 'wellnix-gateway'})
 
-    # -- Nutri AI proxies ---------------------------------------------------
-    @app.route('/api/v1/nutri-ai/profile', methods=['POST'])
-    @jwt_optional
-    def api_nutri_profile():
-        nutri_url, _ = _service_urls()
-        try:
-            return _proxy_request(f"{nutri_url}/health/profile")
-        except Exception:
-            return jsonify({'error': 'Nutri AI scanning service is not available in this deployment. Ana chatbot is fully operational.'}), 503
-
+    # -- Nutri AI (direct, no microservice needed) ---------------------------
     @app.route('/api/v1/nutri-ai/upload', methods=['POST'])
     @jwt_optional
     def api_nutri_upload():
-        nutri_url, _ = _service_urls()
-        try:
-            return _proxy_request(f"{nutri_url}/health/upload")
-        except Exception:
-            return jsonify({'error': 'Nutri AI scanning service is not available in this deployment. Ana chatbot is fully operational.'}), 503
+        if 'image' not in request.files:
+            return jsonify({'error': 'No image file provided'}), 400
+        file = request.files['image']
+        if not file.filename:
+            return jsonify({'error': 'Empty filename'}), 400
+
+        mime = file.content_type or 'image/jpeg'
+        image_bytes = file.read()
+        nutrition_info = extract_nutrition_from_image(image_bytes, mime)
+        if 'error' in nutrition_info:
+            return jsonify(nutrition_info), 422
+        return jsonify({'success': True, 'nutrition_info': nutrition_info})
 
     @app.route('/api/v1/nutri-ai/analyze', methods=['POST'])
     @jwt_optional
     def api_nutri_analyze():
-        nutri_url, _ = _service_urls()
-        try:
-            return _proxy_request(f"{nutri_url}/health/api/analyze")
-        except Exception:
-            return jsonify({'error': 'Nutri AI scanning service is not available in this deployment. Ana chatbot is fully operational.'}), 503
+        data = request.get_json(silent=True) or {}
+        nutrition_info = data.get('nutrition_info')
+        user_profile = data.get('user_profile')
+        if not nutrition_info or not user_profile:
+            return jsonify({'error': 'nutrition_info and user_profile are required'}), 400
+
+        health_metrics = calculate_health_metrics(user_profile)
+        score, explanation = generate_score(user_profile, nutrition_info, health_metrics)
+        return jsonify({
+            'success': True,
+            'score': score,
+            'explanation': explanation,
+            'health_metrics': health_metrics,
+            'nutrition_info': nutrition_info,
+        })
 
     # -- Muscle AI ----------------------------------------------------------
     @app.route('/api/v1/muscle-ai/exercises', methods=['GET'])

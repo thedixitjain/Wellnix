@@ -177,7 +177,7 @@ def call_groq_api(prompt, api_key):
     }
     
     data = {
-        "model": "llama3-70b-8192",  # Using Llama 3 model through Groq
+        "model": "llama-3.3-70b-versatile",
         "messages": [
             {"role": "system", "content": "You are a nutritional expert assistant that provides personalized health advice."},
             {"role": "user", "content": prompt}

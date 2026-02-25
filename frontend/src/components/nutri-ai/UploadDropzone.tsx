@@ -14,12 +14,16 @@ export default function UploadDropzone() {
   const [dragging, setDragging] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
+  const [step, setStep] = useState<'upload' | 'extracted'>('upload');
+  const [nutritionData, setNutritionData] = useState<Record<string, number> | null>(null);
 
   function handleFile(f: File) {
     if (!f.type.startsWith('image/')) { setError('Please upload an image file.'); return; }
     setFile(f);
     setError('');
     setPreview(URL.createObjectURL(f));
+    setStep('upload');
+    setNutritionData(null);
   }
 
   function onDrop(e: DragEvent) {
@@ -35,11 +39,37 @@ export default function UploadDropzone() {
     try {
       const body = new FormData();
       body.append('image', file);
-      const result = await apiFetch('/nutri-ai/upload', { method: 'POST', body });
+      const result = await apiFetch<{ nutrition_info: Record<string, number> }>('/nutri-ai/upload', { method: 'POST', body });
+      setNutritionData(result.nutrition_info);
+      setStep('extracted');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Upload failed';
+      setError(message);
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  async function handleAnalyze() {
+    if (!nutritionData) return;
+    setUploading(true);
+    setError('');
+    try {
+      const profileStr = sessionStorage.getItem('nutri_profile');
+      const userProfile = profileStr ? JSON.parse(profileStr) : {
+        age: 25, gender: 'male', height_cm: 170, weight_kg: 70,
+        activity_level: 'moderate', diet_type: 'omnivore', goal: 'maintain weight',
+        allergies: [], medical_history: { diseases: [] },
+      };
+      const result = await apiFetch('/nutri-ai/analyze', {
+        method: 'POST',
+        body: JSON.stringify({ nutrition_info: nutritionData, user_profile: userProfile }),
+      });
       sessionStorage.setItem('nutri_result', JSON.stringify(result));
       router.push('/nutri-ai/results');
-    } catch (err: any) {
-      setError(err.message || 'Upload failed');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Analysis failed';
+      setError(message);
     } finally {
       setUploading(false);
     }
@@ -69,13 +99,34 @@ export default function UploadDropzone() {
             <path d="M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.878a2 2 0 0 0 1.94-1.515L22 17" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         )}
-        <p className="text-sm text-text-secondary">{file ? file.name : 'Drop an image here or click to browse'}</p>
+        <p className="text-sm text-text-secondary">{file ? file.name : 'Drop a nutrition label image here or click to browse'}</p>
         <p className="mt-1 text-xs text-text-tertiary">JPG, PNG, WEBP up to 10 MB</p>
       </div>
 
-      <Button onClick={handleUpload} loading={uploading} disabled={!file} size="lg" className="w-full">
-        Analyze Label
-      </Button>
+      {step === 'upload' && (
+        <Button onClick={handleUpload} loading={uploading} disabled={!file} size="lg" className="w-full">
+          {uploading ? 'Extracting nutrition data...' : 'Extract Nutrition Data'}
+        </Button>
+      )}
+
+      {step === 'extracted' && nutritionData && (
+        <div className="space-y-4">
+          <div className="rounded-xl border border-border bg-surface p-6">
+            <h3 className="mb-4 text-lg font-semibold">Extracted Nutrition Facts</h3>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {Object.entries(nutritionData).map(([key, val]) => (
+                <div key={key} className="rounded-lg bg-bg p-3 text-center">
+                  <div className="text-xs text-text-tertiary capitalize">{key.replace(/_/g, ' ')}</div>
+                  <div className="text-lg font-bold">{val}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <Button onClick={handleAnalyze} loading={uploading} size="lg" className="w-full">
+            {uploading ? 'Analyzing...' : 'Get Health Score'}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

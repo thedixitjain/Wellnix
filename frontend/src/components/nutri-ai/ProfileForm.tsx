@@ -2,13 +2,11 @@
 
 import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { apiFetch } from '@/lib/api';
 import Button from '@/components/ui/Button';
 import Alert from '@/components/ui/Alert';
 
 export default function ProfileForm() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('male');
@@ -22,24 +20,20 @@ export default function ProfileForm() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    setLoading(true);
     setError('');
-    try {
-      const body = new FormData();
-      body.append('age', age);
-      body.append('gender', gender);
-      body.append('height', height);
-      body.append('weight', weight);
-      body.append('activity_level', activity);
-      body.append('diet_type', diet);
-      body.append('goal', goal);
-      await apiFetch('/nutri-ai/profile', { method: 'POST', body });
-      router.push('/nutri-ai/upload');
-    } catch (err: any) {
-      setError(err.message || 'Failed to save profile');
-    } finally {
-      setLoading(false);
-    }
+    const profile = {
+      age: parseInt(age) || 25,
+      gender,
+      height_cm: parseFloat(height) || 170,
+      weight_kg: parseFloat(weight) || 70,
+      activity_level: activity,
+      diet_type: diet,
+      goal,
+      allergies: [],
+      medical_history: { diseases: [] },
+    };
+    sessionStorage.setItem('nutri_profile', JSON.stringify(profile));
+    router.push('/nutri-ai/upload');
   }
 
   return (
