@@ -151,29 +151,39 @@ def _flat_diseases(profile: Dict) -> List[str]:
     return [n for n in names if n]
 
 
+GROQ_MODELS = [
+    "openai/gpt-oss-120b",
+    "llama-3.3-70b-versatile",
+    "llama-3.1-8b-instant",
+]
+
+
 def _call_groq(messages: List[Dict], api_key: str) -> str:
     url = "https://api.groq.com/openai/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
     }
-    payload = {
-        "model": "llama-3.3-70b-versatile",
-        "messages": messages,
-        "temperature": 0.45,
-        "max_tokens": 1500,
-    }
-    try:
-        resp = requests.post(url, headers=headers, json=payload, timeout=30)
-        if not resp.ok:
-            error_detail = resp.text[:300]
-            return f"I'm sorry, I couldn't generate a response right now. (Groq returned {resp.status_code}: {error_detail})"
-        data = resp.json()
-        return data["choices"][0]["message"]["content"]
-    except requests.exceptions.Timeout:
-        return "I'm sorry, the request timed out. Please try again."
-    except Exception as exc:
-        return f"I'm sorry, I couldn't generate a response right now. Error: {exc}"
+
+    last_error = ""
+    for model in GROQ_MODELS:
+        payload = {
+            "model": model,
+            "messages": messages,
+            "temperature": 0.45,
+            "max_tokens": 1500,
+        }
+        try:
+            resp = requests.post(url, headers=headers, json=payload, timeout=45)
+            if resp.ok:
+                return resp.json()["choices"][0]["message"]["content"]
+            last_error = f"{model}: {resp.status_code} {resp.text[:200]}"
+        except requests.exceptions.Timeout:
+            last_error = f"{model}: timeout"
+        except Exception as exc:
+            last_error = f"{model}: {exc}"
+
+    return f"I'm sorry, I couldn't generate a response right now. Last error: {last_error}"
 
 
 def _extract_ingredients(text: str) -> List[str]:
