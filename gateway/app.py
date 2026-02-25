@@ -158,13 +158,13 @@ def _register_legacy_routes(app):
 
     @app.route('/nutri-ai')
     def nutri_ai_redirect():
-        nutri_url, _ = _service_urls()
-        return redirect(f"{nutri_url}/health/")
+        frontend_url = os.environ.get('FRONTEND_URL', 'http://localhost:3000').rstrip('/')
+        return redirect(f"{frontend_url}/nutri-ai")
 
     @app.route('/muscle-ai')
     def muscle_ai_redirect():
-        _, muscle_url = _service_urls()
-        return redirect(f"{muscle_url}/muscle/")
+        frontend_url = os.environ.get('FRONTEND_URL', 'http://localhost:3000').rstrip('/')
+        return redirect(f"{frontend_url}/muscle-ai")
 
     @app.route('/ana')
     def ana():
