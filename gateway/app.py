@@ -534,24 +534,37 @@ def _register_api_dashboard(app):
 
 
 def _register_api_services(app):
+    @app.route('/api/v1/health', methods=['GET'])
+    def api_health():
+        return jsonify({'status': 'ok', 'service': 'wellnix-gateway'})
+
     # -- Nutri AI proxies ---------------------------------------------------
     @app.route('/api/v1/nutri-ai/profile', methods=['POST'])
     @jwt_optional
     def api_nutri_profile():
         nutri_url, _ = _service_urls()
-        return _proxy_request(f"{nutri_url}/health/profile")
+        try:
+            return _proxy_request(f"{nutri_url}/health/profile")
+        except Exception:
+            return jsonify({'error': 'Nutri AI scanning service is not available in this deployment. Ana chatbot is fully operational.'}), 503
 
     @app.route('/api/v1/nutri-ai/upload', methods=['POST'])
     @jwt_optional
     def api_nutri_upload():
         nutri_url, _ = _service_urls()
-        return _proxy_request(f"{nutri_url}/health/upload")
+        try:
+            return _proxy_request(f"{nutri_url}/health/upload")
+        except Exception:
+            return jsonify({'error': 'Nutri AI scanning service is not available in this deployment. Ana chatbot is fully operational.'}), 503
 
     @app.route('/api/v1/nutri-ai/analyze', methods=['POST'])
     @jwt_optional
     def api_nutri_analyze():
         nutri_url, _ = _service_urls()
-        return _proxy_request(f"{nutri_url}/health/api/analyze")
+        try:
+            return _proxy_request(f"{nutri_url}/health/api/analyze")
+        except Exception:
+            return jsonify({'error': 'Nutri AI scanning service is not available in this deployment. Ana chatbot is fully operational.'}), 503
 
     # -- Muscle AI ----------------------------------------------------------
     @app.route('/api/v1/muscle-ai/exercises', methods=['GET'])
