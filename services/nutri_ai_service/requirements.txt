@@ -1,0 +1,12 @@
+Flask
+Werkzeug
+requests
+python-dotenv
+easyocr
+pillow
+numpy
+torch
+torchvision
+Jinja2
+itsdangerous
+gunicorn

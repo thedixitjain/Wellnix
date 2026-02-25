@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Label — Nutri AI | Wellnix</title>
+  
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/phon.png') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="{{ gateway_url }}/" class="nav-logo" aria-label="Wellnix home">
+        <img src="{{ url_for('static', filename='images/brand/nutri_logo.png') }}" alt="Nutri AI" class="brand-logo brand-logo--product" loading="eager" decoding="async">
+      </a>
+      <ul class="nav-links">
+        <li><a href="{{ gateway_url }}/" class="nav-link">Home</a></li>
+        <li><a href="{{ url_for('health.index') }}" class="nav-link active">Nutri AI</a></li>
+        <li><a href="{{ gateway_url }}/muscle-ai" class="nav-link">Muscle AI</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1>Upload Nutrition Label</h1>
+      <p>Take a photo or upload an image of the nutrition facts</p>
+      <div class="steps">
+        <div class="step completed">
+          <div class="step-number">1</div>
+          <span class="step-label">Profile</span>
+        </div>
+        <div class="step active">
+          <div class="step-number">2</div>
+          <span class="step-label">Upload</span>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <span class="step-label">Results</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload Form -->
+  <section style="padding: var(--space-8) 0 var(--space-16);">
+    <div class="container container-sm">
+      <form action="{{ url_for('health.upload_nutrition') }}" method="post" enctype="multipart/form-data" id="upload-form">
+        <div class="dropzone" id="upload-zone" role="button" tabindex="0" aria-label="Upload nutrition label image">
+          <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 15V4m0 0l-4 4m4-4l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M20 15v3a2 2 0 01-2 2H6a2 2 0 01-2-2v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div style="font-weight: 600; margin-bottom: var(--space-1);">Drop an image here</div>
+          <div class="small muted">or click to choose a file • PNG / JPG up to 10MB</div>
+          <input type="file" name="file" id="file-input" accept=".png,.jpg,.jpeg" required style="display: none;">
+        </div>
+        
+        <div id="preview-container" style="display: none; margin-top: var(--space-6);">
+          <div class="card" style="padding: var(--space-4);">
+            <div style="display: flex; align-items: center; gap: var(--space-4);">
+              <img id="preview-image" src="" alt="Preview" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-md);">
+              <div style="flex: 1;">
+                <p id="file-name" style="font-weight: 500; color: var(--text-primary);"></p>
+                <p id="file-size" style="font-size: 0.8rem; color: var(--text-tertiary);"></p>
+              </div>
+              <button type="button" id="remove-file" class="btn btn-secondary">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: var(--space-8); display: flex; gap: var(--space-4); justify-content: space-between;">
+          <a href="{{ url_for('health.profile') }}" class="btn btn-secondary">Back</a>
+          <button type="submit" class="btn btn-primary btn-lg" id="analyze-btn" disabled>
+            <span>Analyze Nutrition</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 12l4-4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p class="footer-copy">© 2025 Wellnix. Built for better health.</p>
+      <ul class="footer-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/nutri-ai">Nutri AI</a></li>
+        <li><a href="/muscle-ai">Muscle AI</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+    const uploadZone = document.getElementById('upload-zone');
+    const fileInput = document.getElementById('file-input');
+    const previewContainer = document.getElementById('preview-container');
+    const previewImage = document.getElementById('preview-image');
+    const fileName = document.getElementById('file-name');
+    const fileSize = document.getElementById('file-size');
+    const removeBtn = document.getElementById('remove-file');
+    const analyzeBtn = document.getElementById('analyze-btn');
+
+    function openPicker(){ fileInput.click(); }
+    uploadZone.addEventListener('click', openPicker);
+    uploadZone.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPicker(); }
+    });
+
+    uploadZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadZone.classList.add('dragover');
+    });
+
+    uploadZone.addEventListener('dragleave', () => {
+      uploadZone.classList.remove('dragover');
+    });
+
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.classList.remove('dragover');
+      if (e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        handleFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length) {
+        handleFile(e.target.files[0]);
+      }
+    });
+
+    function handleFile(file) {
+      if (!file.type.match(/image\/(png|jpe?g)/)) {
+        alert('Please upload a PNG or JPG image');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        previewImage.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+
+      fileName.textContent = file.name;
+      fileSize.textContent = formatBytes(file.size);
+      
+      uploadZone.style.display = 'none';
+      previewContainer.style.display = 'block';
+      analyzeBtn.disabled = false;
+    }
+
+    removeBtn.addEventListener('click', () => {
+      fileInput.value = '';
+      uploadZone.style.display = 'block';
+      previewContainer.style.display = 'none';
+      analyzeBtn.disabled = true;
+    });
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // Show loading state on submit
+    document.getElementById('upload-form').addEventListener('submit', function() {
+      analyzeBtn.disabled = true;
+      analyzeBtn.innerHTML = '<span class="spinner"></span> Analyzing...';
+    });
+  </script>
+</body>
+</html>

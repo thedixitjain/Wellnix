@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Results — Nutri AI | Wellnix</title>
+  
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/phon.png') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="{{ gateway_url }}/" class="nav-logo" aria-label="Wellnix home">
+        <img src="{{ url_for('static', filename='images/brand/nutri_logo.png') }}" alt="Nutri AI" class="brand-logo brand-logo--product" loading="eager" decoding="async">
+      </a>
+      <ul class="nav-links">
+        <li><a href="{{ gateway_url }}/" class="nav-link">Home</a></li>
+        <li><a href="{{ url_for('health.index') }}" class="nav-link active">Nutri AI</a></li>
+        <li><a href="{{ gateway_url }}/muscle-ai" class="nav-link">Muscle AI</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1>Your Analysis Results</h1>
+      <p>Personalized nutrition insights based on your profile</p>
+      <div class="steps">
+        <div class="step completed">
+          <div class="step-number">1</div>
+          <span class="step-label">Profile</span>
+        </div>
+        <div class="step completed">
+          <div class="step-number">2</div>
+          <span class="step-label">Upload</span>
+        </div>
+        <div class="step active">
+          <div class="step-number">3</div>
+          <span class="step-label">Results</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <section style="padding: var(--space-8) 0 var(--space-16);">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-8); align-items: start;">
+        
+        <!-- Score Card -->
+        <div class="card" style="position: sticky; top: 100px;">
+          <div class="score-display">
+            <div class="score-circle">
+              <span class="score-value">{{ score }}</span>
+            </div>
+            <p class="score-label">Health Score</p>
+            <p style="margin-top: var(--space-4); font-size: 0.9rem;">
+              {% if score >= 8 %}
+                <span style="color: #10b981;">Excellent choice!</span>
+              {% elif score >= 6 %}
+                <span style="color: #f59e0b;">Good, with some considerations</span>
+              {% elif score >= 4 %}
+                <span style="color: #f97316;">Moderate — use caution</span>
+              {% else %}
+                <span style="color: #ef4444;">Not recommended for you</span>
+              {% endif %}
+            </p>
+          </div>
+          
+          {% if health_metrics %}
+          <div style="border-top: 1px solid var(--border-default); padding-top: var(--space-6); margin-top: var(--space-6);">
+            <h4 style="margin-bottom: var(--space-4); font-size: 0.9rem; color: var(--text-tertiary);">Your Metrics</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);">
+              {% if health_metrics.bmi %}
+              <div class="metric-card">
+                <div class="metric-value">{{ "%.1f"|format(health_metrics.bmi) }}</div>
+                <div class="metric-label">BMI</div>
+              </div>
+              {% endif %}
+              {% if health_metrics.bmr %}
+              <div class="metric-card">
+                <div class="metric-value">{{ health_metrics.bmr|int }}</div>
+                <div class="metric-label">BMR</div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Details -->
+        <div>
+          <!-- Explanation -->
+          <div class="card" style="margin-bottom: var(--space-6);">
+            <h3 style="margin-bottom: var(--space-4);">AI Analysis</h3>
+            <div style="color: var(--text-secondary); line-height: 1.8;">
+              {{ explanation|safe if explanation else "Analysis complete. Review the nutritional breakdown below." }}
+            </div>
+          </div>
+
+          <!-- Nutrition Breakdown -->
+          {% if nutrition %}
+          <div class="card">
+            <h3 style="margin-bottom: var(--space-6);">Nutritional Information</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-4);">
+              {% for key, value in nutrition.items() %}
+              <div class="metric-card">
+                <div class="metric-value">{{ value }}</div>
+                <div class="metric-label">{{ key.replace('_', ' ').title() }}</div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Actions -->
+          <div style="margin-top: var(--space-8); display: flex; gap: var(--space-4); flex-wrap: wrap;">
+            <a href="{{ url_for('health.upload_nutrition') }}" class="btn btn-primary">Analyze Another</a>
+            <a href="{{ url_for('health.index') }}" class="btn btn-secondary">Start Over</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p class="footer-copy">© 2025 Wellnix. Built for better health.</p>
+      <ul class="footer-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/nutri-ai">Nutri AI</a></li>
+        <li><a href="/muscle-ai">Muscle AI</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

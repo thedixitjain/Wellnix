@@ -1,0 +1,47 @@
+{
+    "hypertension": {
+      "description": "High blood pressure condition that increases the risk of heart disease.",
+      "nutrient_risks": {
+        "sodium": "avoid > 1500mg",
+        "saturated_fat": "minimize",
+        "trans_fat": "avoid completely"
+      },
+      "recommended_diet": "DASH diet, high in potassium and low in sodium."
+    },
+    "diabetes": {
+      "description": "A metabolic disorder characterized by high blood glucose levels.",
+      "nutrient_risks": {
+        "sugars": "limit added sugar to < 25g/day",
+        "carbs": "prefer complex carbs",
+        "trans_fat": "avoid completely"
+      },
+      "recommended_diet": "Low-glycemic foods, rich in fiber, healthy fats, and lean protein."
+    },
+    "heart disease": {
+      "description": "Includes various types of heart conditions, often linked to atherosclerosis.",
+      "nutrient_risks": {
+        "saturated_fat": "limit to < 10% of daily calories",
+        "cholesterol": "limit to < 200mg/day",
+        "sodium": "avoid > 1500mg"
+      },
+      "recommended_diet": "Mediterranean-style diet, with emphasis on fish, nuts, and whole grains."
+    },
+    "asthma": {
+      "description": "Chronic inflammation of the airways that affects breathing.",
+      "nutrient_risks": {
+        "sulfites": "avoid (common in processed foods)",
+        "salicylates": "may need to be limited in sensitive individuals"
+      },
+      "recommended_diet": "Anti-inflammatory foods, omega-3 fatty acids, vitamin C and E rich diet."
+    },
+    "obesity": {
+      "description": "A condition characterized by excess body fat, increasing risk of other diseases.",
+      "nutrient_risks": {
+        "calories": "monitor closely",
+        "sugars": "limit",
+        "saturated_fat": "reduce"
+      },
+      "recommended_diet": "Calorie-controlled meals, rich in fiber and lean proteins."
+    }
+  }
+  

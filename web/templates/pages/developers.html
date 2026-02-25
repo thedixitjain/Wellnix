@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Developers — Wellnix API{% endblock %}
+
+{% block content %}
+<div class="page-header" style="background: var(--gradient-hero); text-align: center;">
+  <div class="container">
+    <div style="display: inline-block; padding: 4px 12px; background: rgba(16, 185, 129, 0.2); border-radius: var(--radius-full); font-size: 0.8rem; color: var(--accent-primary); margin-bottom: var(--space-4);">API</div>
+    <h1 style="font-size: var(--text-4xl); margin-bottom: var(--space-4);">Build with Wellnix</h1>
+    <p style="font-size: var(--text-lg); max-width: 600px; margin: 0 auto var(--space-8);">
+      Integrate AI-powered nutrition analysis and movement correction into your applications.
+    </p>
+    <div style="display: flex; gap: var(--space-3); justify-content: center;">
+      <a href="/contact" class="btn btn-primary btn-lg">Request API Access</a>
+      <a href="#docs" class="btn btn-secondary btn-lg">View Docs</a>
+    </div>
+  </div>
+</div>
+
+<section style="padding: var(--space-16) 0;" id="docs">
+  <div class="container">
+    <!-- Quick Start -->
+    <div style="max-width: 800px; margin: 0 auto;">
+      <h2 style="margin-bottom: var(--space-6);">Quick Start</h2>
+      
+      <div class="card" style="padding: var(--space-6); margin-bottom: var(--space-8);">
+        <h4 style="margin-bottom: var(--space-4); color: var(--text-secondary);">1. Install the SDK</h4>
+<pre style="background: var(--bg-tertiary); padding: var(--space-4); border-radius: var(--radius-md); overflow-x: auto; margin: 0;"><code style="color: var(--text-primary);">pip install wellnix</code></pre>
+      </div>
+      
+      <div class="card" style="padding: var(--space-6); margin-bottom: var(--space-8);">
+        <h4 style="margin-bottom: var(--space-4); color: var(--text-secondary);">2. Analyze Nutrition</h4>
+<pre style="background: var(--bg-tertiary); padding: var(--space-4); border-radius: var(--radius-md); overflow-x: auto; margin: 0;"><code style="color: var(--text-primary);"><span style="color: #10b981;">import</span> wellnix
+
+<span style="color: #6b7280;"># Initialize client</span>
+client = wellnix.Client(api_key=<span style="color: #f59e0b;">"your-api-key"</span>)
+
+<span style="color: #6b7280;"># Analyze a nutrition label image</span>
+result = client.nutrition.analyze(
+    image=<span style="color: #f59e0b;">"path/to/label.jpg"</span>,
+    user_profile={
+        <span style="color: #f59e0b;">"age"</span>: 30,
+        <span style="color: #f59e0b;">"goal"</span>: <span style="color: #f59e0b;">"lose_weight"</span>,
+        <span style="color: #f59e0b;">"allergies"</span>: [<span style="color: #f59e0b;">"gluten"</span>]
+    }
+)
+
+<span style="color: #10b981;">print</span>(result.score)  <span style="color: #6b7280;"># 7.5</span>
+<span style="color: #10b981;">print</span>(result.explanation)
+<span style="color: #10b981;">print</span>(result.recommendations)</code></pre>
+      </div>
+      
+      <div class="card" style="padding: var(--space-6); margin-bottom: var(--space-8);">
+        <h4 style="margin-bottom: var(--space-4); color: var(--text-secondary);">3. Analyze Movement</h4>
+<pre style="background: var(--bg-tertiary); padding: var(--space-4); border-radius: var(--radius-md); overflow-x: auto; margin: 0;"><code style="color: var(--text-primary);"><span style="color: #6b7280;"># Analyze exercise form</span>
+result = client.muscle.analyze(
+    video=<span style="color: #f59e0b;">"path/to/workout.mp4"</span>,
+    exercise=<span style="color: #f59e0b;">"squat"</span>
+)
+
+<span style="color: #10b981;">print</span>(result.form_score)  <span style="color: #6b7280;"># 8.2</span>
+<span style="color: #10b981;">print</span>(result.reps)  <span style="color: #6b7280;"># 12</span>
+<span style="color: #10b981;">print</span>(result.feedback)  <span style="color: #6b7280;"># ["Keep your knees aligned", ...]</span></code></pre>
+      </div>
+
+      <!-- API Endpoints -->
+      <h2 style="margin: var(--space-12) 0 var(--space-6);">API Endpoints</h2>
+      
+      <div class="card" style="margin-bottom: var(--space-4);">
+        <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
+          <span style="padding: 4px 8px; background: var(--accent-primary); color: white; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">POST</span>
+          <code style="color: var(--text-primary);">/api/v1/nutri-ai/analyze</code>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">Analyze a nutrition label image and get a health score with recommendations.</p>
+      </div>
+      
+      <div class="card" style="margin-bottom: var(--space-4);">
+        <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
+          <span style="padding: 4px 8px; background: var(--accent-primary); color: white; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">POST</span>
+          <code style="color: var(--text-primary);">/api/v1/muscle-ai/analyze</code>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">Analyze exercise form from video and get form score with corrections.</p>
+      </div>
+      
+      <div class="card" style="margin-bottom: var(--space-4);">
+        <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
+          <span style="padding: 4px 8px; background: #3b82f6; color: white; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">GET</span>
+          <code style="color: var(--text-primary);">/api/v1/user/scans</code>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">Retrieve user's nutrition scan history.</p>
+      </div>
+      
+      <div class="card" style="margin-bottom: var(--space-4);">
+        <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
+          <span style="padding: 4px 8px; background: #3b82f6; color: white; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">GET</span>
+          <code style="color: var(--text-primary);">/api/v1/user/workouts</code>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">Retrieve user's workout session history.</p>
+      </div>
+
+      <!-- Rate Limits -->
+      <h2 style="margin: var(--space-12) 0 var(--space-6);">Rate Limits</h2>
+      
+      <div class="card" style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 1px solid var(--border-default);">
+              <th style="text-align: left; padding: var(--space-3);">Plan</th>
+              <th style="text-align: left; padding: var(--space-3);">Requests/Day</th>
+              <th style="text-align: left; padding: var(--space-3);">Requests/Min</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border-subtle);">
+              <td style="padding: var(--space-3);">Free</td>
+              <td style="padding: var(--space-3);">100</td>
+              <td style="padding: var(--space-3);">10</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-subtle);">
+              <td style="padding: var(--space-3);">Pro</td>
+              <td style="padding: var(--space-3);">10,000</td>
+              <td style="padding: var(--space-3);">100</td>
+            </tr>
+            <tr>
+              <td style="padding: var(--space-3);">Enterprise</td>
+              <td style="padding: var(--space-3);">Unlimited</td>
+              <td style="padding: var(--space-3);">Custom</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Contact -->
+      <div class="card" style="text-align: center; padding: var(--space-8); margin-top: var(--space-12); background: var(--accent-glow); border-color: rgba(16, 185, 129, 0.3);">
+        <h3 style="margin-bottom: var(--space-3);">Ready to integrate?</h3>
+        <p style="color: var(--text-secondary); margin-bottom: var(--space-4);">
+          Contact us to get your API key and start building.
+        </p>
+        <a href="/contact" class="btn btn-primary">Request API Access</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

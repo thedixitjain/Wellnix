@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Roadmap — Wellnix{% endblock %}
+
+{% block content %}
+<div class="page-header" style="background: var(--gradient-hero); text-align: center;">
+  <div class="container">
+    <h1 style="font-size: var(--text-4xl); margin-bottom: var(--space-4);">Product Roadmap</h1>
+    <p style="font-size: var(--text-lg); max-width: 600px; margin: 0 auto;">
+      See what we're building and where Wellnix is headed. We're on a mission to make health intelligence accessible to everyone.
+    </p>
+  </div>
+</div>
+
+<section style="padding: var(--space-16) 0;">
+  <div class="container" style="max-width: 900px;">
+    
+    <!-- Now Available -->
+    <div style="margin-bottom: var(--space-12);">
+      <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-6);">
+        <div style="width: 12px; height: 12px; background: var(--accent-primary); border-radius: 50%;"></div>
+        <h2 style="margin: 0;">Now Available</h2>
+        <span style="padding: 4px 8px; background: var(--accent-primary); color: white; border-radius: var(--radius-sm); font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">Live</span>
+      </div>
+      <div style="display: grid; gap: var(--space-4); padding-left: var(--space-6); border-left: 2px solid var(--accent-primary);">
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">🍎 Nutri AI</h4>
+          <p style="color: var(--text-secondary); margin: 0;">Scan nutrition labels and get personalized health scores based on your profile.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">🏋️ Muscle AI</h4>
+          <p style="color: var(--text-secondary); margin: 0;">Upload workout videos for AI-powered form analysis and rep counting.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">📊 Health Dashboard</h4>
+          <p style="color: var(--text-secondary); margin: 0;">Track your nutrition and fitness progress over time.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">🔌 Developer API</h4>
+          <p style="color: var(--text-secondary); margin: 0;">RESTful APIs for integrating Wellnix into your applications.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q1 2025 -->
+    <div style="margin-bottom: var(--space-12);">
+      <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-6);">
+        <div style="width: 12px; height: 12px; background: #f59e0b; border-radius: 50%;"></div>
+        <h2 style="margin: 0;">Q1 2025</h2>
+        <span style="padding: 4px 8px; background: #f59e0b; color: white; border-radius: var(--radius-sm); font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">In Progress</span>
+      </div>
+      <div style="display: grid; gap: var(--space-4); padding-left: var(--space-6); border-left: 2px solid #f59e0b;">
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">📱 Mobile Apps</h4>
+          <p style="color: var(--text-secondary); margin: 0;">Native iOS and Android apps with camera access and offline mode.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">📷 Live Webcam Mode</h4>
+          <p style="color: var(--text-secondary); margin: 0;">Real-time form feedback with audio cues during your workout.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">🔢 Barcode Scanner</h4>
+          <p style="color: var(--text-secondary); margin: 0;">Scan product barcodes for instant nutrition lookup from global databases.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">🍽️ Meal Tracking</h4>
+          <p style="color: var(--text-secondary); margin: 0;">Tag scans by meal type. Get daily summaries and "you're low on protein" alerts.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 2025 -->
+    <div style="margin-bottom: var(--space-12);">
+      <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-6);">
+        <div style="width: 12px; height: 12px; background: var(--border-default); border-radius: 50%;"></div>
+        <h2 style="margin: 0;">Q2 2025</h2>
+        <span style="padding: 4px 8px; background: var(--bg-tertiary); color: var(--text-secondary); border-radius: var(--radius-sm); font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">Planned</span>
+      </div>
+      <div style="display: grid; gap: var(--space-4); padding-left: var(--space-6); border-left: 2px solid var(--border-default);">
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">🤖 AI Health Coach</h4>
+          <p style="color: var(--text-secondary); margin: 0;">Conversational AI: "Is this good for my diabetes?" with personalized answers.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">📈 Predictive Analytics</h4>
+          <p style="color: var(--text-secondary); margin: 0;">"At this rate, you'll hit your goal in 6 weeks" — AI-powered projections.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">⌚ Wearables Integration</h4>
+          <p style="color: var(--text-secondary); margin: 0;">Sync with Apple Health, Google Fit, Fitbit, Garmin for holistic health view.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">🗓️ Calendar Integration</h4>
+          <p style="color: var(--text-secondary); margin: 0;">Schedule meal prep, plan workouts, get reminders.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3-Q4 2025 -->
+    <div style="margin-bottom: var(--space-12);">
+      <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-6);">
+        <div style="width: 12px; height: 12px; background: var(--border-subtle); border-radius: 50%;"></div>
+        <h2 style="margin: 0;">Q3–Q4 2025</h2>
+        <span style="padding: 4px 8px; background: var(--bg-tertiary); color: var(--text-tertiary); border-radius: var(--radius-sm); font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">Vision</span>
+      </div>
+      <div style="display: grid; gap: var(--space-4); padding-left: var(--space-6); border-left: 2px solid var(--border-subtle);">
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">🏆 Gamification & Social</h4>
+          <p style="color: var(--text-secondary); margin: 0;">Achievements, streaks, leaderboards, and find workout buddies.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">🧠 Mental Health Module</h4>
+          <p style="color: var(--text-secondary); margin: 0;">Stress tracking, meditation recommendations, sleep-nutrition-fitness loop.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">🧬 Genetic Integration</h4>
+          <p style="color: var(--text-secondary); margin: 0;">Upload 23andMe data for genetically personalized nutrition and exercise.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">😴 Sleep Tracking</h4>
+          <p style="color: var(--text-secondary); margin: 0;">Understand how sleep affects your workout performance and nutrition choices.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-2);">🌍 Global Expansion</h4>
+          <p style="color: var(--text-secondary); margin: 0;">Multi-language support, region-specific nutrition guidelines, local food databases.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature Request -->
+    <div class="card" style="text-align: center; padding: var(--space-8); background: var(--accent-glow); border-color: rgba(16, 185, 129, 0.3);">
+      <h3 style="margin-bottom: var(--space-3);">Have a feature request?</h3>
+      <p style="color: var(--text-secondary); margin-bottom: var(--space-4);">
+        We'd love to hear what you'd like to see in Wellnix.
+      </p>
+      <a href="/contact" class="btn btn-primary">Share Your Ideas</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

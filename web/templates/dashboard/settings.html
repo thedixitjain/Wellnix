@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Settings — Wellnix{% endblock %}
+
+{% block content %}
+<div class="page-header" style="background: var(--gradient-hero);">
+  <div class="container">
+    <h1>Account Settings</h1>
+    <p>Manage your profile and preferences</p>
+  </div>
+</div>
+
+<section style="padding: var(--space-8) 0;">
+  <div class="container" style="max-width: 600px;">
+    <form method="POST">
+      <!-- Profile Info -->
+      <div class="card" style="margin-bottom: var(--space-6);">
+        <h3 style="margin-bottom: var(--space-6);">Profile Information</h3>
+        
+        <div class="form-group">
+          <label class="form-label" for="name">Full Name</label>
+          <input type="text" id="name" name="name" class="form-input" value="{{ user.name }}" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <input type="email" id="email" class="form-input" value="{{ user.email }}" disabled>
+          <small style="color: var(--text-tertiary); font-size: 0.8rem;">Contact support to change your email</small>
+        </div>
+      </div>
+
+      <!-- Health Profile -->
+      <div class="card" style="margin-bottom: var(--space-6);">
+        <h3 style="margin-bottom: var(--space-6);">Health Profile</h3>
+        <p style="color: var(--text-tertiary); margin-bottom: var(--space-4); font-size: 0.9rem;">
+          This information helps us provide personalized nutrition recommendations.
+        </p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+          <div class="form-group">
+            <label class="form-label" for="age">Age</label>
+            <input type="number" id="age" name="age" class="form-input" value="{{ user.age or '' }}" min="1" max="120">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="gender">Gender</label>
+            <select id="gender" name="gender" class="form-input">
+              <option value="">Select...</option>
+              <option value="male" {% if user.gender == 'male' %}selected{% endif %}>Male</option>
+              <option value="female" {% if user.gender == 'female' %}selected{% endif %}>Female</option>
+              <option value="other" {% if user.gender == 'other' %}selected{% endif %}>Other</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="height_cm">Height (cm)</label>
+            <input type="number" id="height_cm" name="height_cm" class="form-input" value="{{ user.height_cm or '' }}" step="0.1">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="weight_kg">Weight (kg)</label>
+            <input type="number" id="weight_kg" name="weight_kg" class="form-input" value="{{ user.weight_kg or '' }}" step="0.1">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="activity_level">Activity Level</label>
+          <select id="activity_level" name="activity_level" class="form-input">
+            <option value="">Select...</option>
+            <option value="sedentary" {% if user.activity_level == 'sedentary' %}selected{% endif %}>Sedentary (little or no exercise)</option>
+            <option value="light" {% if user.activity_level == 'light' %}selected{% endif %}>Light (exercise 1-3 days/week)</option>
+            <option value="moderate" {% if user.activity_level == 'moderate' %}selected{% endif %}>Moderate (exercise 3-5 days/week)</option>
+            <option value="active" {% if user.activity_level == 'active' %}selected{% endif %}>Active (exercise 6-7 days/week)</option>
+            <option value="athlete" {% if user.activity_level == 'athlete' %}selected{% endif %}>Athlete (2x training/day)</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="diet_type">Diet Type</label>
+          <select id="diet_type" name="diet_type" class="form-input">
+            <option value="">Select...</option>
+            <option value="omnivore" {% if user.diet_type == 'omnivore' %}selected{% endif %}>Omnivore</option>
+            <option value="vegetarian" {% if user.diet_type == 'vegetarian' %}selected{% endif %}>Vegetarian</option>
+            <option value="vegan" {% if user.diet_type == 'vegan' %}selected{% endif %}>Vegan</option>
+            <option value="keto" {% if user.diet_type == 'keto' %}selected{% endif %}>Keto</option>
+            <option value="paleo" {% if user.diet_type == 'paleo' %}selected{% endif %}>Paleo</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="goal">Health Goal</label>
+          <select id="goal" name="goal" class="form-input">
+            <option value="">Select...</option>
+            <option value="lose_weight" {% if user.goal == 'lose_weight' %}selected{% endif %}>Lose Weight</option>
+            <option value="maintain" {% if user.goal == 'maintain' %}selected{% endif %}>Maintain Weight</option>
+            <option value="gain_muscle" {% if user.goal == 'gain_muscle' %}selected{% endif %}>Gain Muscle</option>
+            <option value="improve_health" {% if user.goal == 'improve_health' %}selected{% endif %}>Improve Overall Health</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Subscription -->
+      <div class="card" style="margin-bottom: var(--space-6);">
+        <h3 style="margin-bottom: var(--space-4);">Subscription</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 500; text-transform: capitalize;">{{ user.plan }} Plan</div>
+            <div style="font-size: 0.9rem; color: var(--text-tertiary);">
+              {% if user.plan == 'free' %}
+                {{ user.scans_this_month }}/5 scans used this month
+              {% else %}
+                Unlimited access
+              {% endif %}
+            </div>
+          </div>
+          {% if user.plan == 'free' %}
+          <a href="/pricing" class="btn btn-primary">Upgrade</a>
+          {% endif %}
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+        Save Changes
+      </button>
+    </form>
+  </div>
+</section>
+{% endblock %}
+

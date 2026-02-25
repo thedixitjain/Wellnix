@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Scan History — Wellnix{% endblock %}
+
+{% block content %}
+<div class="page-header" style="background: var(--gradient-hero);">
+  <div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <h1>Scan History</h1>
+        <p>Your nutrition scan timeline and insights</p>
+      </div>
+      <a href="/nutri-ai" class="btn btn-primary">New Scan</a>
+    </div>
+  </div>
+</div>
+
+<section style="padding: var(--space-8) 0;">
+  <div class="container">
+    {% if scans.items %}
+      <div class="card" style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 1px solid var(--border-default);">
+              <th style="text-align: left; padding: var(--space-3); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary);">Product</th>
+              <th style="text-align: left; padding: var(--space-3); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary);">Meal</th>
+              <th style="text-align: left; padding: var(--space-3); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary);">Score</th>
+              <th style="text-align: left; padding: var(--space-3); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary);">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for scan in scans.items %}
+            <tr style="border-bottom: 1px solid var(--border-subtle);">
+              <td style="padding: var(--space-4);">
+                <div style="font-weight: 500;">{{ scan.product_name or 'Nutrition Scan' }}</div>
+                {% if scan.brand %}
+                <div style="font-size: 0.8rem; color: var(--text-tertiary);">{{ scan.brand }}</div>
+                {% endif %}
+              </td>
+              <td style="padding: var(--space-4);">
+                {% if scan.meal_type %}
+                  <span style="padding: 4px 8px; background: var(--bg-tertiary); border-radius: var(--radius-sm); font-size: 0.8rem;">
+                    {{ scan.meal_type.title() }}
+                  </span>
+                {% else %}
+                  —
+                {% endif %}
+              </td>
+              <td style="padding: var(--space-4);">
+                <span style="font-weight: 600; color: {% if scan.score >= 7 %}var(--accent-primary){% elif scan.score >= 5 %}#f59e0b{% else %}#ef4444{% endif %};">
+                  {{ scan.score }}/10
+                </span>
+              </td>
+              <td style="padding: var(--space-4); color: var(--text-tertiary);">
+                {{ scan.created_at.strftime('%b %d, %Y') }}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      {% if scans.pages > 1 %}
+      <div style="display: flex; justify-content: center; gap: var(--space-2); margin-top: var(--space-6);">
+        {% if scans.has_prev %}
+        <a href="?page={{ scans.prev_num }}" class="btn btn-secondary">← Previous</a>
+        {% endif %}
+        <span style="padding: var(--space-3); color: var(--text-tertiary);">
+          Page {{ scans.page }} of {{ scans.pages }}
+        </span>
+        {% if scans.has_next %}
+        <a href="?page={{ scans.next_num }}" class="btn btn-secondary">Next →</a>
+        {% endif %}
+      </div>
+      {% endif %}
+    {% else %}
+      <div class="card" style="text-align: center; padding: var(--space-12);">
+        <div style="font-size: 4rem; margin-bottom: var(--space-4);">📸</div>
+        <h3>No scans yet</h3>
+        <p style="margin-bottom: var(--space-6);">Start scanning nutrition labels to build your health timeline.</p>
+        <a href="/nutri-ai" class="btn btn-primary">Scan Your First Label</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
+

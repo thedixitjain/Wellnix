@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Profile — Nutri AI | Wellnix</title>
+  
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/phon.png') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="{{ gateway_url }}/" class="nav-logo" aria-label="Wellnix home">
+        <img src="{{ url_for('static', filename='images/brand/nutri_logo.png') }}" alt="Nutri AI" class="brand-logo brand-logo--product" loading="eager" decoding="async">
+      </a>
+      <ul class="nav-links">
+        <li><a href="{{ gateway_url }}/" class="nav-link">Home</a></li>
+        <li><a href="{{ url_for('health.index') }}" class="nav-link active">Nutri AI</a></li>
+        <li><a href="{{ gateway_url }}/muscle-ai" class="nav-link">Muscle AI</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1>Create Your Profile</h1>
+      <p>Tell us about yourself for personalized nutrition analysis</p>
+      <div class="steps">
+        <div class="step active">
+          <div class="step-number">1</div>
+          <span class="step-label">Profile</span>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <span class="step-label">Upload</span>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <span class="step-label">Results</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <section style="padding: var(--space-8) 0 var(--space-16);">
+    <div class="container container-sm">
+      <form action="{{ url_for('health.profile') }}" method="post" class="card" style="padding: var(--space-8);">
+        
+        <h3 style="margin-bottom: var(--space-6);">Basic Information</h3>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4);">
+          <div class="form-group">
+            <label class="form-label" for="age">Age</label>
+            <input type="number" id="age" name="age" class="form-input" required min="1" max="120" placeholder="25">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="gender">Gender</label>
+            <select id="gender" name="gender" class="form-select" required>
+              <option value="">Select...</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="height_cm">Height (cm)</label>
+            <input type="number" id="height_cm" name="height_cm" class="form-input" required min="50" max="300" placeholder="175">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="weight_kg">Weight (kg)</label>
+            <input type="number" id="weight_kg" name="weight_kg" class="form-input" required min="20" max="500" placeholder="70">
+          </div>
+        </div>
+
+        <h3 style="margin: var(--space-8) 0 var(--space-6);">Lifestyle</h3>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4);">
+          <div class="form-group">
+            <label class="form-label" for="activity_level">Activity Level</label>
+            <select id="activity_level" name="activity_level" class="form-select" required>
+              <option value="">Select...</option>
+              <option value="sedentary">Sedentary</option>
+              <option value="light">Lightly Active</option>
+              <option value="moderate">Moderately Active</option>
+              <option value="very_active">Very Active</option>
+              <option value="athletic">Athletic</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="diet_type">Diet Type</label>
+            <select id="diet_type" name="diet_type" class="form-select">
+              <option value="regular">Regular</option>
+              <option value="vegetarian">Vegetarian</option>
+              <option value="vegan">Vegan</option>
+              <option value="keto">Keto</option>
+              <option value="paleo">Paleo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="goal">Health Goal</label>
+            <select id="goal" name="goal" class="form-select">
+              <option value="maintain">Maintain Weight</option>
+              <option value="lose">Lose Weight</option>
+              <option value="gain">Gain Weight</option>
+              <option value="muscle">Build Muscle</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sleep_hours">Sleep (hours/night)</label>
+            <input type="number" id="sleep_hours" name="sleep_hours" class="form-input" step="0.5" min="3" max="14" value="7">
+          </div>
+        </div>
+
+        <h3 style="margin: var(--space-8) 0 var(--space-6);">Health Conditions</h3>
+        <div class="form-group">
+          <label class="form-label">Medical Conditions</label>
+          <div class="checklist" id="diseases-list">
+            <label class="checkitem">
+              <input type="checkbox" value="diabetes">
+              <div>
+                <div class="checkitem-label">Diabetes</div>
+                <div class="checkitem-hint">Blood sugar management</div>
+              </div>
+            </label>
+            <label class="checkitem">
+              <input type="checkbox" value="hypertension">
+              <div>
+                <div class="checkitem-label">Hypertension</div>
+                <div class="checkitem-hint">Blood pressure support</div>
+              </div>
+            </label>
+            <label class="checkitem">
+              <input type="checkbox" value="heart_disease">
+              <div>
+                <div class="checkitem-label">Heart disease</div>
+                <div class="checkitem-hint">Cardiovascular considerations</div>
+              </div>
+            </label>
+            <label class="checkitem">
+              <input type="checkbox" value="obesity">
+              <div>
+                <div class="checkitem-label">Obesity</div>
+                <div class="checkitem-hint">Weight management focus</div>
+              </div>
+            </label>
+            <label class="checkitem">
+              <input type="checkbox" value="kidney_disease">
+              <div>
+                <div class="checkitem-label">Kidney disease</div>
+                <div class="checkitem-hint">Protein/sodium sensitivity</div>
+              </div>
+            </label>
+            <label class="checkitem">
+              <input type="checkbox" value="celiac">
+              <div>
+                <div class="checkitem-label">Celiac disease</div>
+                <div class="checkitem-hint">Gluten-related constraints</div>
+              </div>
+            </label>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="allergies">Food Allergies (comma separated)</label>
+          <input type="text" id="allergies" name="allergies" class="form-input" placeholder="e.g., peanuts, shellfish, dairy">
+        </div>
+
+        <input type="hidden" name="hydration_level" value="normal">
+        <input type="hidden" name="stress_level" value="moderate">
+        <input type="hidden" name="alcohol_consumption" value="moderate">
+        <input type="hidden" name="smoker" value="false">
+        <input type="hidden" name="meal_frequency" value="3">
+
+        <div style="margin-top: var(--space-8); text-align: right;">
+          <button type="submit" class="btn btn-primary btn-lg">
+            Continue to Upload
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 12l4-4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p class="footer-copy">© 2025 Wellnix. Built for better health.</p>
+      <ul class="footer-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/nutri-ai">Nutri AI</a></li>
+        <li><a href="/muscle-ai">Muscle AI</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+    // Convert checklist to JSON array for backend compatibility
+    document.querySelector('form').addEventListener('submit', function() {
+      const checks = document.querySelectorAll('#diseases-list input[type=\"checkbox\"]:checked');
+      const selected = Array.from(checks).map(el => el.value);
+
+      const hidden = document.createElement('input');
+      hidden.type = 'hidden';
+      hidden.name = 'diseases';
+      hidden.value = JSON.stringify(selected);
+
+      this.appendChild(hidden);
+    });
+  </script>
+</body>
+</html>

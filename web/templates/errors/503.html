@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Service Unavailable — Wellnix{% endblock %}
+
+{% block content %}
+<section class="error-page">
+  <div>
+    <div class="error-code">503</div>
+    <h1 style="margin-bottom: var(--space-4);">Service temporarily unavailable</h1>
+    <p style="margin-bottom: var(--space-8); max-width: 400px; margin-left: auto; margin-right: auto;">
+      One of our services is currently unavailable. We're working on it.
+    </p>
+    <div style="display: flex; gap: var(--space-4); justify-content: center;">
+      <a href="/" class="btn btn-primary">Go Home</a>
+      <a href="/contact" class="btn btn-secondary">Contact Support</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

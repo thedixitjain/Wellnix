@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}Wellnix — AI Health Intelligence{% endblock %}
+{% block description %}AI-powered nutrition analysis and exercise form correction. Scan labels, analyze workouts, and get personalized health recommendations.{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Wellnix</div>
+    <h1>Health intelligence, simplified.</h1>
+            <p class="hero-subtitle">
+      Scan nutrition labels for personalized scores. Analyze workout videos for form feedback.
+            </p>
+    <div class="hero-cta">
+      <a href="/register" class="btn btn-primary btn-lg">Get Started Free</a>
+      <a href="#features" class="btn btn-secondary btn-lg">See How It Works</a>
+        </div>
+
+    <!-- Trust indicators -->
+    <div style="margin-top: var(--space-8); display: flex; gap: var(--space-8); justify-content: center; flex-wrap: wrap;">
+      <div style="text-align: center;">
+        <div style="font-size: var(--text-2xl); font-weight: 700; color: var(--accent-primary);">5+</div>
+        <div style="font-size: var(--text-sm); color: var(--text-tertiary);">Exercise Types</div>
+                </div>
+      <div style="text-align: center;">
+        <div style="font-size: var(--text-2xl); font-weight: 700; color: var(--accent-primary);">AI</div>
+        <div style="font-size: var(--text-sm); color: var(--text-tertiary);">Powered Analysis</div>
+                </div>
+      <div style="text-align: center;">
+        <div style="font-size: var(--text-2xl); font-weight: 700; color: var(--accent-primary);">Free</div>
+        <div style="font-size: var(--text-sm); color: var(--text-tertiary);">To Start</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Core Products -->
+<section id="features" style="padding: var(--space-16) 0;">
+        <div class="container">
+    <div style="text-align: center; margin-bottom: var(--space-10);">
+      <h2>Three products. One platform.</h2>
+      <p style="font-size: var(--text-lg); max-width: 620px; margin: var(--space-3) auto 0;">
+        Minimal workflow. Clear results. Built for everyday use.
+                </p>
+            </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8);">
+      <!-- Nutri AI -->
+      <a href="/nutri-ai" class="card card-glow" style="padding: var(--space-8); text-decoration: none;">
+        <img src="{{ url_for('static', filename='images/nutri_ai_artwork.png') }}" alt="Nutri AI" style="width: 100%; max-width: 360px; height: auto; display: block; margin: 0 auto var(--space-6);">
+        <h3 style="font-size: var(--text-2xl); margin-bottom: var(--space-3);">Nutri AI</h3>
+        <p style="color: var(--text-secondary); margin-bottom: var(--space-6);">
+          Upload a label photo and get a personalized health score based on your profile.
+        </p>
+        <ul style="list-style: none; margin-bottom: var(--space-6);">
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">•</span> OCR label extraction
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">•</span> Personalized scoring
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">•</span> Actionable recommendations
+          </li>
+        </ul>
+        <span class="btn btn-primary">Open Nutri AI</span>
+      </a>
+      
+      <!-- Muscle AI -->
+      <a href="/muscle-ai" class="card card-glow" style="padding: var(--space-8); text-decoration: none;">
+        <img src="{{ url_for('static', filename='images/muscle_ai_artwork.png') }}" alt="Muscle AI" style="width: 100%; max-width: 360px; height: auto; display: block; margin: 0 auto var(--space-6);">
+        <h3 style="font-size: var(--text-2xl); margin-bottom: var(--space-3);">Muscle AI</h3>
+        <p style="color: var(--text-secondary); margin-bottom: var(--space-6);">
+          Upload a workout video and get form feedback plus rep counting for supported exercises.
+        </p>
+        <ul style="list-style: none; margin-bottom: var(--space-6);">
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">•</span> Pose detection
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">•</span> Rep counting
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">•</span> Form feedback
+          </li>
+        </ul>
+        <span class="btn btn-primary">Open Muscle AI</span>
+      </a>
+      
+      <!-- Ana -->
+      <a href="/ana" class="card card-glow" style="padding: var(--space-8); text-decoration: none; grid-column: 1 / -1;">
+        <div style="display: grid; grid-template-columns: auto 1fr; gap: var(--space-8); align-items: center;">
+          <div style="width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3z"/>
+              <path d="M17 4a2 2 0 0 0 2 2c-1.5 0-2 1-2 2 0-1-0.5-2-2-2a2 2 0 0 0 2-2"/>
+            </svg>
+          </div>
+          <div>
+            <div style="display: inline-block; padding: 2px 10px; background: var(--accent-glow); border: 1px solid rgba(16,185,129,0.3); border-radius: var(--radius-full); font-size: 0.75rem; color: var(--accent-primary); font-weight: 600; margin-bottom: var(--space-2);">NEW</div>
+            <h3 style="font-size: var(--text-2xl); margin-bottom: var(--space-2);">Ana — Nutrition Chatbot</h3>
+            <p style="color: var(--text-secondary); margin-bottom: var(--space-4);">
+              Tell Ana what ingredients you have, and she'll suggest a healthy, balanced diet plan personalised to your goals.
+              Powered by Harvard Medical School nutrition science and RAG-based AI.
+            </p>
+            <ul style="list-style: none; display: flex; gap: var(--space-6); flex-wrap: wrap; margin-bottom: 0;">
+              <li style="display: flex; align-items: center; gap: var(--space-2);">
+                <span style="color: var(--accent-primary);">•</span> Ingredient-based meal planning
+              </li>
+              <li style="display: flex; align-items: center; gap: var(--space-2);">
+                <span style="color: var(--accent-primary);">•</span> Personalised to your profile
+              </li>
+              <li style="display: flex; align-items: center; gap: var(--space-2);">
+                <span style="color: var(--accent-primary);">•</span> RAG-powered nutrition knowledge
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div style="margin-top: var(--space-6);">
+          <span class="btn btn-primary">Chat with Ana</span>
+        </div>
+      </a>
+            </div>
+        </div>
+    </section>
+
+<!-- Developer API -->
+<section style="padding: var(--space-12) 0;">
+        <div class="container">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12); align-items: center;">
+      <div>
+        <div style="display: inline-block; padding: 4px 12px; background: var(--bg-tertiary); border-radius: var(--radius-full); font-size: 0.8rem; color: var(--text-secondary); margin-bottom: var(--space-4);">Developers</div>
+        <h2 style="margin-bottom: var(--space-4);">Build with Wellnix</h2>
+        <p style="margin-bottom: var(--space-6);">
+          Integrate nutrition scoring and movement analysis into your app with a simple API.
+        </p>
+        <a href="/developers" class="btn btn-primary">View API Docs →</a>
+                </div>
+
+      <div class="card" style="padding: var(--space-6);">
+<pre style="background: var(--bg-tertiary); padding: var(--space-4); border-radius: var(--radius-md); overflow-x: auto; margin: 0; font-size: var(--text-sm);"><code style="color: var(--text-primary);"><span style="color: #10b981;">import</span> wellnix
+
+client = wellnix.Client(api_key=<span style="color: #f59e0b;">"..."</span>)
+
+<span style="color: #6b7280;"># Analyze nutrition</span>
+result = client.nutrition.analyze(
+    image=<span style="color: #f59e0b;">"label.jpg"</span>,
+    profile={<span style="color: #f59e0b;">"goal"</span>: <span style="color: #f59e0b;">"lose_weight"</span>}
+)
+
+<span style="color: #10b981;">print</span>(result.score)  <span style="color: #6b7280;"># 7.5</span></code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Enterprise -->
+<section style="padding: var(--space-12) 0; background: var(--bg-secondary);">
+        <div class="container">
+    <div style="text-align: center; margin-bottom: var(--space-12);">
+      <div style="display: inline-block; padding: 4px 12px; background: var(--bg-tertiary); border-radius: var(--radius-full); font-size: 0.8rem; color: var(--text-secondary); margin-bottom: var(--space-4);">Enterprise</div>
+      <h2>For Organizations</h2>
+      <p style="max-width: 600px; margin: var(--space-4) auto 0;">
+        Deploy Wellnix for gyms, corporate wellness, healthcare, and more.
+      </p>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6);">
+      <div class="card" style="text-align: center; padding: var(--space-8);">
+        <div style="font-size: 2.5rem; margin-bottom: var(--space-4);">🏋️</div>
+        <h4>Gyms</h4>
+        <p style="color: var(--text-secondary); font-size: var(--text-sm);">White-label for your fitness center</p>
+      </div>
+      
+      <div class="card" style="text-align: center; padding: var(--space-8);">
+        <div style="font-size: 2.5rem; margin-bottom: var(--space-4);">🏢</div>
+        <h4>Corporate</h4>
+        <p style="color: var(--text-secondary); font-size: var(--text-sm);">Employee wellness programs</p>
+      </div>
+      
+      <div class="card" style="text-align: center; padding: var(--space-8);">
+        <div style="font-size: 2.5rem; margin-bottom: var(--space-4);">🏥</div>
+        <h4>Healthcare</h4>
+        <p style="color: var(--text-secondary); font-size: var(--text-sm);">Patient engagement tools</p>
+      </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: var(--space-10);">
+      <a href="/enterprise" class="btn btn-secondary">Learn More →</a>
+            </div>
+        </div>
+    </section>
+
+<!-- CTA -->
+<section style="padding: var(--space-12) 0;">
+        <div class="container">
+    <div style="text-align: center;">
+      <h2 style="margin-bottom: var(--space-3);">Start in minutes</h2>
+      <p style="margin-bottom: var(--space-6); max-width: 520px; margin-left: auto; margin-right: auto;">
+        Create an account, run your first scan, and track progress on the dashboard.
+      </p>
+      <div style="display: flex; gap: var(--space-3); justify-content: center; flex-wrap: wrap;">
+        <a href="/register" class="btn btn-primary btn-lg">Get Started</a>
+        <a href="/contact" class="btn btn-secondary btn-lg">Talk to Us</a>
+        <a href="/roadmap" class="btn btn-ghost btn-lg">Roadmap</a>
+                </div>
+                </div>
+            </div>
+</section>
+{% endblock %}

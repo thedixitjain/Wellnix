@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Enterprise — Wellnix{% endblock %}
+
+{% block content %}
+<div class="page-header" style="background: var(--gradient-hero); text-align: center;">
+  <div class="container">
+    <div style="display: inline-block; padding: 4px 12px; background: rgba(16, 185, 129, 0.2); border-radius: var(--radius-full); font-size: 0.8rem; color: var(--accent-primary); margin-bottom: var(--space-4);">ENTERPRISE</div>
+    <h1 style="font-size: var(--text-4xl); margin-bottom: var(--space-4);">Health intelligence for organizations</h1>
+    <p style="font-size: var(--text-lg); max-width: 650px; margin: 0 auto var(--space-8);">
+      Deploy Wellnix across your organization. Gyms, corporate wellness programs, healthcare providers, and insurance companies.
+    </p>
+    <a href="/contact" class="btn btn-primary btn-lg">Talk to Sales</a>
+  </div>
+</div>
+
+<section style="padding: var(--space-16) 0;">
+  <div class="container">
+    <!-- Use Cases -->
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); margin-bottom: var(--space-16);">
+      <div class="card" style="padding: var(--space-8);">
+        <div style="display: inline-block; padding: 4px 10px; border: 1px solid var(--border-default); border-radius: var(--radius-full); font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: var(--space-4);">GYMS</div>
+        <h3 style="margin-bottom: var(--space-3);">Gyms & Fitness Centers</h3>
+        <p style="color: var(--text-secondary);">
+          White-label Wellnix for your gym. Offer members AI-powered form correction and nutrition guidance under your brand.
+        </p>
+        <ul style="list-style: none; margin-top: var(--space-4);">
+          <li style="padding: var(--space-1) 0; color: var(--text-secondary); font-size: 0.9rem;">• Member engagement</li>
+          <li style="padding: var(--space-1) 0; color: var(--text-secondary); font-size: 0.9rem;">• Reduce trainer workload</li>
+          <li style="padding: var(--space-1) 0; color: var(--text-secondary); font-size: 0.9rem;">• Premium differentiator</li>
+        </ul>
+      </div>
+      
+      <div class="card" style="padding: var(--space-8);">
+        <div style="display: inline-block; padding: 4px 10px; border: 1px solid var(--border-default); border-radius: var(--radius-full); font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: var(--space-4);">CORPORATE</div>
+        <h3 style="margin-bottom: var(--space-3);">Corporate Wellness</h3>
+        <p style="color: var(--text-secondary);">
+          Improve employee health outcomes. Track aggregate health metrics while respecting individual privacy.
+        </p>
+        <ul style="list-style: none; margin-top: var(--space-4);">
+          <li style="padding: var(--space-1) 0; color: var(--text-secondary); font-size: 0.9rem;">• Anonymous dashboards</li>
+          <li style="padding: var(--space-1) 0; color: var(--text-secondary); font-size: 0.9rem;">• Wellness challenges</li>
+          <li style="padding: var(--space-1) 0; color: var(--text-secondary); font-size: 0.9rem;">• ROI reporting</li>
+        </ul>
+      </div>
+      
+      <div class="card" style="padding: var(--space-8);">
+        <div style="display: inline-block; padding: 4px 10px; border: 1px solid var(--border-default); border-radius: var(--radius-full); font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: var(--space-4);">HEALTHCARE</div>
+        <h3 style="margin-bottom: var(--space-3);">Healthcare & Insurance</h3>
+        <p style="color: var(--text-secondary);">
+          Partner with Wellnix to offer preventive health tools to your members or patients.
+        </p>
+        <ul style="list-style: none; margin-top: var(--space-4);">
+          <li style="padding: var(--space-1) 0; color: var(--text-secondary); font-size: 0.9rem;">• HIPAA compliance ready</li>
+          <li style="padding: var(--space-1) 0; color: var(--text-secondary); font-size: 0.9rem;">• Integration APIs</li>
+          <li style="padding: var(--space-1) 0; color: var(--text-secondary); font-size: 0.9rem;">• Outcome tracking</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div style="text-align: center; margin-bottom: var(--space-8);">
+      <h2>Enterprise Features</h2>
+      <p style="color: var(--text-secondary);">Everything you need to deploy at scale</p>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6); max-width: 900px; margin: 0 auto;">
+      <div class="card" style="display: flex; align-items: flex-start; gap: var(--space-4);">
+        <div style="width: 40px; height: 40px; background: var(--accent-glow); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <span style="color: var(--accent-primary);">🏷️</span>
+        </div>
+        <div>
+          <h4 style="margin-bottom: var(--space-1);">White-Label Solution</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">Your branding, your domain. Fully customizable UI.</p>
+        </div>
+      </div>
+      
+      <div class="card" style="display: flex; align-items: flex-start; gap: var(--space-4);">
+        <div style="width: 40px; height: 40px; background: var(--accent-glow); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <span style="color: var(--accent-primary);">📊</span>
+        </div>
+        <div>
+          <h4 style="margin-bottom: var(--space-1);">Admin Dashboard</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">Manage users, view analytics, control access.</p>
+        </div>
+      </div>
+      
+      <div class="card" style="display: flex; align-items: flex-start; gap: var(--space-4);">
+        <div style="width: 40px; height: 40px; background: var(--accent-glow); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <span style="color: var(--accent-primary);">🔌</span>
+        </div>
+        <div>
+          <h4 style="margin-bottom: var(--space-1);">API Integration</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">RESTful APIs to integrate with your existing systems.</p>
+        </div>
+      </div>
+      
+      <div class="card" style="display: flex; align-items: flex-start; gap: var(--space-4);">
+        <div style="width: 40px; height: 40px; background: var(--accent-glow); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <span style="color: var(--accent-primary);">🔒</span>
+        </div>
+        <div>
+          <h4 style="margin-bottom: var(--space-1);">Enterprise Security</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">SSO, SOC 2, HIPAA-ready infrastructure.</p>
+        </div>
+      </div>
+      
+      <div class="card" style="display: flex; align-items: flex-start; gap: var(--space-4);">
+        <div style="width: 40px; height: 40px; background: var(--accent-glow); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <span style="color: var(--accent-primary);">📱</span>
+        </div>
+        <div>
+          <h4 style="margin-bottom: var(--space-1);">Mobile SDK</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">Embed Wellnix in your iOS and Android apps.</p>
+        </div>
+      </div>
+      
+      <div class="card" style="display: flex; align-items: flex-start; gap: var(--space-4);">
+        <div style="width: 40px; height: 40px; background: var(--accent-glow); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <span style="color: var(--accent-primary);">🎧</span>
+        </div>
+        <div>
+          <h4 style="margin-bottom: var(--space-1);">Dedicated Support</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">Named account manager and priority SLA.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="card" style="text-align: center; padding: var(--space-12); margin-top: var(--space-16); background: var(--accent-glow); border-color: rgba(16, 185, 129, 0.3);">
+      <h2 style="margin-bottom: var(--space-4);">Ready to get started?</h2>
+      <p style="color: var(--text-secondary); margin-bottom: var(--space-6); max-width: 500px; margin-left: auto; margin-right: auto;">
+        Let's discuss how Wellnix can help your organization achieve better health outcomes.
+      </p>
+      <a href="/contact" class="btn btn-primary btn-lg">Schedule a Demo</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

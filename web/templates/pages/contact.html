@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Contact — Wellnix{% endblock %}
+
+{% block content %}
+<div class="page-header" style="background: var(--gradient-hero); text-align: center;">
+  <div class="container">
+    <h1 style="font-size: var(--text-4xl); margin-bottom: var(--space-4);">Get in Touch</h1>
+    <p style="font-size: var(--text-lg); max-width: 600px; margin: 0 auto;">
+      Have questions, partnership inquiries, or want to learn more? We'd love to hear from you.
+    </p>
+  </div>
+</div>
+
+<section style="padding: var(--space-12) 0;">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12); max-width: 1000px; margin: 0 auto;">
+      
+      <!-- Contact Info -->
+      <div>
+        <h2 style="margin-bottom: var(--space-6);">Reach Out</h2>
+        
+        <div class="card" style="margin-bottom: var(--space-6);">
+          <h3 style="margin-bottom: var(--space-4);">Founders</h3>
+          
+          <div style="display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-4); padding-bottom: var(--space-4); border-bottom: 1px solid var(--border-subtle);">
+            <img src="{{ url_for('static', filename='images/founders/dixit_jain.png') }}" alt="Founder photo" style="width: 56px; height: 56px; object-fit: cover; border-radius: 9999px; border: 1px solid var(--border-default);">
+            <div>
+              <div style="font-weight: 600;">Dixit Jain</div>
+              <div style="color: var(--text-tertiary); font-size: 0.9rem;">Co-Founder</div>
+              <div style="font-size: 0.9rem;">
+                <a href="https://www.linkedin.com/in/thedixitjain/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">LinkedIn</a>
+              </div>
+            </div>
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: var(--space-4);">
+            <img src="{{ url_for('static', filename='images/founders/divya_pratap_singh.jpeg') }}" alt="Founder photo" style="width: 56px; height: 56px; object-fit: cover; border-radius: 9999px; border: 1px solid var(--border-default);">
+            <div>
+              <div style="font-weight: 600;">Divya Pratap Singh</div>
+              <div style="color: var(--text-tertiary); font-size: 0.9rem;">Co-Founder</div>
+              <div style="font-size: 0.9rem;">
+                <a href="https://www.linkedin.com/in/divyapratapsingh29/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">LinkedIn</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom: var(--space-6);">
+          <h4 style="margin-bottom: var(--space-3);">General Inquiries</h4>
+          <a href="mailto:hello@wellnix.ai" style="color: var(--accent-primary);">hello@wellnix.ai</a>
+        </div>
+        
+        <div class="card" style="margin-bottom: var(--space-6);">
+          <h4 style="margin-bottom: var(--space-3);">Enterprise & Partnerships</h4>
+          <a href="mailto:enterprise@wellnix.ai" style="color: var(--accent-primary);">enterprise@wellnix.ai</a>
+        </div>
+        
+        <div class="card">
+          <h4 style="margin-bottom: var(--space-3);">Developer Support</h4>
+          <a href="mailto:developers@wellnix.ai" style="color: var(--accent-primary);">developers@wellnix.ai</a>
+        </div>
+      </div>
+      
+      <!-- Contact Form -->
+      <div>
+        <h2 style="margin-bottom: var(--space-6);">Send a Message</h2>
+        
+        <form class="card" style="padding: var(--space-6);">
+          <div class="form-group">
+            <label class="form-label" for="name">Name</label>
+            <input type="text" id="name" name="name" class="form-input" required placeholder="Your name">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <input type="email" id="email" name="email" class="form-input" required placeholder="you@example.com">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="subject">Subject</label>
+            <select id="subject" name="subject" class="form-input" required>
+              <option value="">Select a topic...</option>
+              <option value="general">General Inquiry</option>
+              <option value="enterprise">Enterprise / Partnership</option>
+              <option value="api">API Access</option>
+              <option value="support">Technical Support</option>
+              <option value="feature">Feature Request</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="message">Message</label>
+            <textarea id="message" name="message" class="form-input" required placeholder="Tell us more..." rows="5" style="resize: vertical;"></textarea>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+            Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Office Location (Optional) -->
+    <div style="text-align: center; margin-top: var(--space-16);">
+      <h3 style="margin-bottom: var(--space-4);">Based in India, building for the world</h3>
+      <p style="color: var(--text-tertiary);">
+        Wellnix is a globally-minded health technology company.
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

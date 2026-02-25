@@ -1,0 +1,50 @@
+{
+    "general": {
+      "calories": {
+        "min": 1200,
+        "max": 2500
+      },
+      "sodium": {
+        "max": 2300,
+        "ideal": 1500
+      },
+      "sugars": {
+        "max": 36
+      },
+      "fat": {
+        "total_max": 70,
+        "saturated_max": 20,
+        "trans_fat": "0"
+      },
+      "protein": {
+        "recommended_per_kg": 0.8
+      }
+    },
+    "age_gender_specific": {
+      "male_18_30": {
+        "calories": 2500,
+        "protein": 56
+      },
+      "female_18_30": {
+        "calories": 2000,
+        "protein": 46
+      },
+      "male_31_50": {
+        "calories": 2400,
+        "protein": 56
+      },
+      "female_31_50": {
+        "calories": 1800,
+        "protein": 46
+      },
+      "male_51_plus": {
+        "calories": 2200,
+        "protein": 56
+      },
+      "female_51_plus": {
+        "calories": 1600,
+        "protein": 46
+      }
+    }
+  }
+  

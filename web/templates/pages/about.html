@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}About — Wellnix{% endblock %}
+
+{% block content %}
+<div class="page-header" style="background: var(--gradient-hero); text-align: center;">
+  <div class="container">
+    <h1 style="font-size: var(--text-4xl); margin-bottom: var(--space-4);">About Wellnix</h1>
+    <p style="font-size: var(--text-lg); max-width: 650px; margin: 0 auto;">
+      We're building AI-powered tools to make personalized health guidance accessible to everyone.
+    </p>
+  </div>
+</div>
+
+<section style="padding: var(--space-12) 0;">
+  <div class="container" style="max-width: 800px;">
+    
+    <!-- Mission -->
+    <div style="text-align: center; margin-bottom: var(--space-16);">
+      <h2 style="margin-bottom: var(--space-6);">Our Mission</h2>
+      <p style="font-size: var(--text-lg); color: var(--text-secondary);">
+        Health decisions shouldn't require a personal nutritionist or trainer. We believe AI can democratize access to expert-level health guidance — from understanding what's in your food to perfecting your exercise form.
+      </p>
+    </div>
+
+    <!-- Story -->
+    <div class="card" style="padding: var(--space-8); margin-bottom: var(--space-12);">
+      <h3 style="margin-bottom: var(--space-4);">The Story</h3>
+      <p style="color: var(--text-secondary); margin-bottom: var(--space-4);">
+        Wellnix started from a simple frustration: nutrition labels are confusing, and gym form advice is expensive or inaccessible.
+      </p>
+      <p style="color: var(--text-secondary); margin-bottom: var(--space-4);">
+        We asked: What if your phone could instantly tell you whether a food is right for <em>you</em>? What if it could be your personal trainer, giving real-time feedback on your squat form?
+      </p>
+      <p style="color: var(--text-secondary); margin: 0;">
+        That question became Wellnix — an AI-powered health companion that puts personalized nutrition and fitness guidance in everyone's pocket.
+      </p>
+    </div>
+
+    <!-- Team -->
+    <div style="margin-bottom: var(--space-12);">
+      <h2 style="text-align: center; margin-bottom: var(--space-8);">The Team</h2>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6);">
+        <div class="card" style="text-align: center; padding: var(--space-8);">
+          <img src="{{ url_for('static', filename='images/founders/dixit_jain.png') }}" alt="Founder photo" style="width: 88px; height: 88px; object-fit: cover; border-radius: 9999px; margin: 0 auto var(--space-4); border: 1px solid var(--border-default);">
+          <h3 style="margin-bottom: var(--space-1);">Dixit Jain</h3>
+          <p style="color: var(--text-tertiary); margin-bottom: var(--space-3);">Co-Founder</p>
+          <p style="margin-bottom: var(--space-3); font-size: 0.9rem;">
+            <a href="https://www.linkedin.com/in/thedixitjain/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">LinkedIn</a>
+          </p>
+          <p style="color: var(--text-tertiary); font-size: 0.9rem; margin: 0;">
+            Building the future of personalized health technology.
+          </p>
+        </div>
+        
+        <div class="card" style="text-align: center; padding: var(--space-8);">
+          <img src="{{ url_for('static', filename='images/founders/divya_pratap_singh.jpeg') }}" alt="Founder photo" style="width: 88px; height: 88px; object-fit: cover; border-radius: 9999px; margin: 0 auto var(--space-4); border: 1px solid var(--border-default);">
+          <h3 style="margin-bottom: var(--space-1);">Divya Pratap Singh</h3>
+          <p style="color: var(--text-tertiary); margin-bottom: var(--space-3);">Co-Founder</p>
+          <p style="margin-bottom: var(--space-3); font-size: 0.9rem;">
+            <a href="https://www.linkedin.com/in/divyapratapsingh29/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">LinkedIn</a>
+          </p>
+          <p style="color: var(--text-tertiary); font-size: 0.9rem; margin: 0;">
+            Passionate about making AI work for real-world health problems.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Values -->
+    <div>
+      <h2 style="text-align: center; margin-bottom: var(--space-8);">Our Values</h2>
+      
+      <div style="display: grid; gap: var(--space-4);">
+        <div class="card" style="display: flex; gap: var(--space-4);">
+          <div style="width: 10px; height: 10px; border-radius: 9999px; background: var(--accent-primary); margin-top: 10px; flex: 0 0 auto;"></div>
+          <div>
+            <h4 style="margin-bottom: var(--space-2);">User-First</h4>
+            <p style="color: var(--text-secondary); margin: 0;">Every feature starts with a user problem. We ship fast and iterate based on real feedback.</p>
+          </div>
+        </div>
+        
+        <div class="card" style="display: flex; gap: var(--space-4);">
+          <div style="width: 10px; height: 10px; border-radius: 9999px; background: var(--accent-primary); margin-top: 10px; flex: 0 0 auto;"></div>
+          <div>
+            <h4 style="margin-bottom: var(--space-2);">Science-Backed</h4>
+            <p style="color: var(--text-secondary); margin: 0;">Our recommendations are grounded in peer-reviewed nutrition science and biomechanics research.</p>
+          </div>
+        </div>
+        
+        <div class="card" style="display: flex; gap: var(--space-4);">
+          <div style="width: 10px; height: 10px; border-radius: 9999px; background: var(--accent-primary); margin-top: 10px; flex: 0 0 auto;"></div>
+          <div>
+            <h4 style="margin-bottom: var(--space-2);">Privacy-Conscious</h4>
+            <p style="color: var(--text-secondary); margin: 0;">Your health data is yours. We never sell it, and we're building with privacy by design.</p>
+          </div>
+        </div>
+        
+        <div class="card" style="display: flex; gap: var(--space-4);">
+          <div style="width: 10px; height: 10px; border-radius: 9999px; background: var(--accent-primary); margin-top: 10px; flex: 0 0 auto;"></div>
+          <div>
+            <h4 style="margin-bottom: var(--space-2);">Globally Accessible</h4>
+            <p style="color: var(--text-secondary); margin: 0;">Health intelligence shouldn't be a luxury. We're building for everyone, everywhere.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="card" style="text-align: center; padding: var(--space-12); margin-top: var(--space-16); background: var(--accent-glow); border-color: rgba(16, 185, 129, 0.3);">
+      <h2 style="margin-bottom: var(--space-4);">Join us on this journey</h2>
+      <p style="color: var(--text-secondary); margin-bottom: var(--space-6);">
+        Whether you're a user, developer, or potential partner — we'd love to connect.
+      </p>
+      <div style="display: flex; gap: var(--space-3); justify-content: center;">
+        <a href="/register" class="btn btn-primary">Get Started Free</a>
+        <a href="/contact" class="btn btn-secondary">Contact Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

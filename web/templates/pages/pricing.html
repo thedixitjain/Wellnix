@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Pricing — Wellnix{% endblock %}
+
+{% block content %}
+<div class="page-header" style="background: var(--gradient-hero); text-align: center;">
+  <div class="container">
+    <h1 style="font-size: var(--text-4xl); margin-bottom: var(--space-4);">Simple, transparent pricing</h1>
+    <p style="font-size: var(--text-lg); max-width: 600px; margin: 0 auto;">
+      Start free and upgrade as you grow. No hidden fees, cancel anytime.
+    </p>
+  </div>
+</div>
+
+<section style="padding: var(--space-16) 0;">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); max-width: 1000px; margin: 0 auto;">
+      
+      <!-- Free Plan -->
+      <div class="card" style="padding: var(--space-8); text-align: center;">
+        <h3 style="font-size: var(--text-xl); margin-bottom: var(--space-2);">Free</h3>
+        <div style="font-size: 3rem; font-weight: 700; margin-bottom: var(--space-2);">$0</div>
+        <p style="color: var(--text-tertiary); margin-bottom: var(--space-6);">Perfect to get started</p>
+        
+        <ul style="list-style: none; text-align: left; margin-bottom: var(--space-8);">
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">✓</span> 5 nutrition scans/month
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">✓</span> Basic form analysis
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">✓</span> 3 exercise types
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">✓</span> Scan history
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--text-tertiary);">✕</span> <span style="color: var(--text-tertiary);">AI recommendations</span>
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--text-tertiary);">✕</span> <span style="color: var(--text-tertiary);">Progress analytics</span>
+          </li>
+        </ul>
+        
+        <a href="/register" class="btn btn-secondary" style="width: 100%;">Get Started Free</a>
+      </div>
+      
+      <!-- Pro Plan -->
+      <div class="card card-glow" style="padding: var(--space-8); text-align: center; border-color: var(--accent-primary); position: relative;">
+        <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent-primary); color: white; padding: 4px 16px; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">Most Popular</div>
+        
+        <h3 style="font-size: var(--text-xl); margin-bottom: var(--space-2);">Pro</h3>
+        <div style="font-size: 3rem; font-weight: 700; margin-bottom: var(--space-2);">
+          $9<span style="font-size: 1rem; font-weight: 400; color: var(--text-tertiary);">.99/mo</span>
+        </div>
+        <p style="color: var(--text-tertiary); margin-bottom: var(--space-6);">For health enthusiasts</p>
+        
+        <ul style="list-style: none; text-align: left; margin-bottom: var(--space-8);">
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">✓</span> <strong>Unlimited</strong> nutrition scans
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">✓</span> Advanced form analysis
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">✓</span> All 6 exercise types
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">✓</span> AI-powered recommendations
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">✓</span> Progress analytics
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">✓</span> Priority support
+          </li>
+        </ul>
+        
+        <a href="/register" class="btn btn-primary" style="width: 100%;">Start 14-day Free Trial</a>
+      </div>
+      
+      <!-- Enterprise Plan -->
+      <div class="card" style="padding: var(--space-8); text-align: center;">
+        <h3 style="font-size: var(--text-xl); margin-bottom: var(--space-2);">Enterprise</h3>
+        <div style="font-size: 3rem; font-weight: 700; margin-bottom: var(--space-2);">Custom</div>
+        <p style="color: var(--text-tertiary); margin-bottom: var(--space-6);">For teams and organizations</p>
+        
+        <ul style="list-style: none; text-align: left; margin-bottom: var(--space-8);">
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">✓</span> Everything in Pro
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">✓</span> Team dashboard
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">✓</span> Admin controls
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">✓</span> API access
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">✓</span> Custom integrations
+          </li>
+          <li style="padding: var(--space-2) 0; display: flex; align-items: center; gap: var(--space-2);">
+            <span style="color: var(--accent-primary);">✓</span> Dedicated support
+          </li>
+        </ul>
+        
+        <a href="/contact" class="btn btn-secondary" style="width: 100%;">Contact Sales</a>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div style="max-width: 700px; margin: var(--space-16) auto 0;">
+      <h2 style="text-align: center; margin-bottom: var(--space-8);">Frequently Asked Questions</h2>
+      
+      <div class="card" style="margin-bottom: var(--space-4);">
+        <h4 style="margin-bottom: var(--space-2);">Can I cancel anytime?</h4>
+        <p style="color: var(--text-secondary); margin: 0;">Yes, you can cancel your subscription at any time. No questions asked, no hidden fees.</p>
+      </div>
+      
+      <div class="card" style="margin-bottom: var(--space-4);">
+        <h4 style="margin-bottom: var(--space-2);">What happens when I hit my free limit?</h4>
+        <p style="color: var(--text-secondary); margin: 0;">You can still view your history and past results. Your scan count resets at the beginning of each month.</p>
+      </div>
+      
+      <div class="card" style="margin-bottom: var(--space-4);">
+        <h4 style="margin-bottom: var(--space-2);">Is my data secure?</h4>
+        <p style="color: var(--text-secondary); margin: 0;">Absolutely. We use bank-level encryption and never share your personal health data with third parties.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

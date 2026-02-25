@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — Wellnix{% endblock %}
+
+{% block content %}
+<div class="page-header" style="background: var(--gradient-hero);">
+  <div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
+      <div>
+        <h1 style="margin-bottom: var(--space-2);">Welcome back, {{ user.name.split()[0] }}</h1>
+        <p>Track your health journey and see your progress</p>
+      </div>
+      <div style="display: flex; gap: var(--space-3);">
+        <a href="/nutri-ai" class="btn btn-primary">Scan Nutrition</a>
+        <a href="/muscle-ai" class="btn btn-secondary">Analyze Workout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section style="padding: var(--space-8) 0;">
+  <div class="container">
+    <!-- Health Score Overview -->
+    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-4); margin-bottom: var(--space-8);">
+      <div class="card" style="text-align: center; padding: var(--space-6);">
+        <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent-primary);">{{ stats.health_score }}</div>
+        <div style="font-size: 0.8rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">Health Score</div>
+      </div>
+      <div class="card" style="text-align: center; padding: var(--space-6);">
+        <div style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary);">{{ stats.total_scans }}</div>
+        <div style="font-size: 0.8rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">Total Scans</div>
+      </div>
+      <div class="card" style="text-align: center; padding: var(--space-6);">
+        <div style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary);">{{ stats.avg_nutrition }}</div>
+        <div style="font-size: 0.8rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">Avg Nutrition</div>
+      </div>
+      <div class="card" style="text-align: center; padding: var(--space-6);">
+        <div style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary);">{{ stats.total_workouts }}</div>
+        <div style="font-size: 0.8rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">Workouts</div>
+      </div>
+      <div class="card" style="text-align: center; padding: var(--space-6);">
+        <div style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary);">{{ stats.avg_form }}</div>
+        <div style="font-size: 0.8rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">Avg Form</div>
+      </div>
+    </div>
+
+    <!-- Plan Status -->
+    {% if user.plan == 'free' %}
+    <div class="card" style="background: var(--accent-glow); border-color: rgba(16, 185, 129, 0.3); margin-bottom: var(--space-8);">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <h3 style="margin-bottom: var(--space-2);">Free Plan — {{ user.scans_this_month }}/5 scans used this month</h3>
+          <p style="margin: 0;">Upgrade to Pro for unlimited scans, advanced AI insights, and more.</p>
+        </div>
+        <a href="/pricing" class="btn btn-primary">Upgrade to Pro</a>
+      </div>
+    </div>
+    {% endif %}
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8);">
+      <!-- Recent Scans -->
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6);">
+          <h3>Recent Scans</h3>
+          <a href="/dashboard/history" style="color: var(--accent-primary); font-size: 0.9rem;">View all →</a>
+        </div>
+        {% if recent_scans %}
+          <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+            {% for scan in recent_scans %}
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3); background: var(--bg-tertiary); border-radius: var(--radius-md);">
+              <div>
+                <div style="font-weight: 500;">{{ scan.product_name or 'Nutrition Scan' }}</div>
+                <div style="font-size: 0.8rem; color: var(--text-tertiary);">{{ scan.created_at.strftime('%b %d, %Y') }}</div>
+              </div>
+              <div style="font-size: 1.25rem; font-weight: 600; color: {% if scan.score >= 7 %}var(--accent-primary){% elif scan.score >= 5 %}#f59e0b{% else %}#ef4444{% endif %};">
+                {{ scan.score }}/10
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p style="text-align: center; padding: var(--space-8); color: var(--text-tertiary);">
+            No scans yet. <a href="/nutri-ai" style="color: var(--accent-primary);">Scan your first label →</a>
+          </p>
+        {% endif %}
+      </div>
+
+      <!-- Recent Workouts -->
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6);">
+          <h3>Recent Workouts</h3>
+          <a href="/dashboard/workouts" style="color: var(--accent-primary); font-size: 0.9rem;">View all →</a>
+        </div>
+        {% if recent_workouts %}
+          <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+            {% for workout in recent_workouts %}
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3); background: var(--bg-tertiary); border-radius: var(--radius-md);">
+              <div>
+                <div style="font-weight: 500;">{{ workout.exercise_type.replace('_', ' ').title() }}</div>
+                <div style="font-size: 0.8rem; color: var(--text-tertiary);">{{ workout.reps or 0 }} reps | {{ workout.created_at.strftime('%b %d') }}</div>
+              </div>
+              <div style="font-size: 1.25rem; font-weight: 600; color: {% if workout.form_score >= 7 %}var(--accent-primary){% elif workout.form_score >= 5 %}#f59e0b{% else %}#ef4444{% endif %};">
+                {{ workout.form_score }}/10
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p style="text-align: center; padding: var(--space-8); color: var(--text-tertiary);">
+            No workouts yet. <a href="/muscle-ai" style="color: var(--accent-primary);">Analyze your form →</a>
+          </p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div style="margin-top: var(--space-8);">
+      <h3 style="margin-bottom: var(--space-4);">Quick Actions</h3>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4);">
+        <a href="/nutri-ai" class="card card-glow" style="text-align: center; padding: var(--space-6); text-decoration: none;">
+          <div style="font-weight: 500;">Scan Label</div>
+          <div class="small muted" style="margin-top: var(--space-2);">Nutri AI</div>
+        </a>
+        <a href="/muscle-ai" class="card card-glow" style="text-align: center; padding: var(--space-6); text-decoration: none;">
+          <div style="font-weight: 500;">Analyze Form</div>
+          <div class="small muted" style="margin-top: var(--space-2);">Muscle AI</div>
+        </a>
+        <a href="/dashboard/settings" class="card card-glow" style="text-align: center; padding: var(--space-6); text-decoration: none;">
+          <div style="font-weight: 500;">Settings</div>
+          <div class="small muted" style="margin-top: var(--space-2);">Profile</div>
+        </a>
+        <a href="/dashboard/history" class="card card-glow" style="text-align: center; padding: var(--space-6); text-decoration: none;">
+          <div style="font-weight: 500;">History</div>
+          <div class="small muted" style="margin-top: var(--space-2);">Scans</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

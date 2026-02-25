@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Muscle AI — Exercise form analysis using computer vision.">
+  <title>Muscle AI — Wellnix</title>
+
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/phon.png') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+  <!-- Navigation (links point back to gateway for consistency) -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="{{ gateway_url }}/" class="nav-logo" aria-label="Wellnix home">
+        <img src="{{ url_for('static', filename='images/brand/muscle_logo.png') }}" alt="Muscle AI" class="brand-logo brand-logo--product" loading="eager" decoding="async">
+      </a>
+      <ul class="nav-links">
+        <li><a href="{{ gateway_url }}/" class="nav-link">Home</a></li>
+        <li><a href="{{ gateway_url }}/nutri-ai" class="nav-link">Nutri AI</a></li>
+        <li><a href="{{ gateway_url }}/muscle-ai" class="nav-link active">Muscle AI</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  {% if message %}
+  <div style="padding-top: 80px;">
+    <div class="container">
+      <div class="alert alert-error">{{ message }}</div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if movement_analysis %}
+  <div class="page-header">
+    <div class="container container-sm">
+      <div class="pill" style="margin-bottom: var(--space-4);">Results</div>
+      <h1 style="margin-bottom: var(--space-2);">Analysis complete</h1>
+      <p class="muted">Here’s what we detected from your video.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container container-sm">
+      <div class="split">
+        <div class="video-frame">
+          <video controls autoplay muted loop>
+            <source src="{{ video_url }}" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="stack">
+          <div class="card">
+            <div class="pill" style="margin-bottom: var(--space-4);">Form score</div>
+            <div style="display: flex; align-items: baseline; gap: var(--space-2);">
+              <div style="font-size: 2.5rem; font-weight: 800;">{{ movement_analysis.score }}</div>
+              <div class="muted">/10</div>
+            </div>
+            <div class="small muted" style="margin-top: var(--space-2);">
+              {% if movement_analysis.score >= 8 %}
+                Excellent — keep it up.
+              {% elif movement_analysis.score >= 6 %}
+                Solid — minor improvements recommended.
+              {% else %}
+                Needs work — focus on the key cues below.
+              {% endif %}
+            </div>
+          </div>
+
+          {% if movement_analysis.metrics %}
+          <div class="kpi-grid">
+            <div class="kpi">
+              <div class="kpi-value">{{ movement_analysis.metrics.repetitions }}</div>
+              <div class="kpi-label">Repetitions</div>
+            </div>
+            {% if movement_analysis.metrics.form_metrics %}
+            <div class="kpi">
+              <div class="kpi-value">{{ "%.0f"|format(movement_analysis.metrics.form_metrics.average * 100) }}%</div>
+              <div class="kpi-label">Form quality</div>
+            </div>
+            {% endif %}
+            {% if movement_analysis.metrics.depth_metrics %}
+            <div class="kpi">
+              <div class="kpi-value">{{ "%.0f"|format(movement_analysis.metrics.depth_metrics.average * 100) }}%</div>
+              <div class="kpi-label">Depth</div>
+            </div>
+            {% endif %}
+          </div>
+          {% endif %}
+
+          <a href="{{ url_for('muscle.index') }}" class="btn btn-primary btn-lg">Analyze another video</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% else %}
+  <!-- Upload View -->
+  <div class="page-header">
+    <div class="container container-sm">
+      <div class="pill" style="margin-bottom: var(--space-4);">Muscle AI</div>
+      <h1 style="margin-bottom: var(--space-2);">Upload a video. Get form feedback.</h1>
+      <p class="muted" style="max-width: 58ch;">
+        Choose the exercise and upload a short clip. We’ll return a score plus key metrics.
+      </p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container container-sm">
+      <div class="split">
+        <div class="stack">
+          <div class="card">
+            <div class="pill" style="margin-bottom: var(--space-4);">How to record</div>
+            <ul style="margin-left: 1rem; color: var(--text-secondary);">
+              <li>Front view, full body in frame</li>
+              <li>Good lighting, stable camera</li>
+              <li>10–20 seconds is enough</li>
+            </ul>
+            <div style="margin-top: var(--space-6);">
+              <img src="{{ url_for('static', filename='images/muscle_ai_artwork.png') }}" alt="Muscle AI artwork" style="width: 100%; max-width: 420px; height: auto; display: block; margin: 0 auto;">
+            </div>
+          </div>
+        </div>
+
+        <form action="{{ url_for('muscle.upload') }}" method="post" enctype="multipart/form-data" id="upload-form" class="stack">
+          <div class="card">
+            <label class="form-label" for="exercise_type">Exercise</label>
+            <select id="exercise_type" name="exercise_type" class="form-input" required>
+              <option value="" selected disabled>Select an exercise…</option>
+              {% for exercise in supported_exercises %}
+                <option value="{{ exercise }}">{{ exercise.replace('_', ' ').title() }}</option>
+              {% endfor %}
+            </select>
+
+            <div style="margin-top: var(--space-6);">
+              <label class="form-label">Video</label>
+              <div class="dropzone" id="upload-zone" role="button" tabindex="0" aria-label="Upload workout video">
+                <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M12 15V4m0 0l-4 4m4-4l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M20 15v3a2 2 0 01-2 2H6a2 2 0 01-2-2v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div style="font-weight: 600; margin-bottom: var(--space-1);">Drop your video here</div>
+                <div class="small muted">or click to choose a file • MP4 / AVI / MOV • up to 100MB</div>
+                <input type="file" name="video" id="video-input" accept=".mp4,.avi,.mov" required style="display: none;">
+              </div>
+            </div>
+          </div>
+
+          <div id="preview-container" style="display: none;">
+            <div class="card">
+              <div class="file-row">
+                <div style="width: 44px; height: 44px; border: 1px solid var(--border-default); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;" aria-hidden="true">
+                  <span style="font-weight: 700; color: var(--text-secondary);">MP4</span>
+                </div>
+                <div class="file-meta" style="flex: 1;">
+                  <div id="file-name" class="file-name"></div>
+                  <div id="file-size" class="small muted"></div>
+                </div>
+                <button type="button" id="remove-file" class="btn btn-secondary">Remove</button>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg" id="analyze-btn" disabled style="width: 100%;">
+            Analyze form
+          </button>
+          <div class="small muted">Processing can take ~30–90 seconds depending on video length.</div>
+        </form>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <script>
+    const uploadZone = document.getElementById('upload-zone');
+    const videoInput = document.getElementById('video-input');
+    const previewContainer = document.getElementById('preview-container');
+    const fileName = document.getElementById('file-name');
+    const fileSize = document.getElementById('file-size');
+    const removeBtn = document.getElementById('remove-file');
+    const analyzeBtn = document.getElementById('analyze-btn');
+    const exerciseSelect = document.getElementById('exercise_type');
+
+    let selectedExercise = false;
+    let fileSelected = false;
+
+    function updateSubmitBtn() {
+      analyzeBtn.disabled = !(selectedExercise && fileSelected);
+    }
+
+    if (exerciseSelect) {
+      exerciseSelect.addEventListener('change', () => {
+        selectedExercise = !!exerciseSelect.value;
+        updateSubmitBtn();
+      });
+    }
+
+    function openPicker() {
+      if (videoInput) videoInput.click();
+    }
+
+    if (uploadZone) {
+      uploadZone.addEventListener('click', openPicker);
+      uploadZone.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openPicker();
+        }
+      });
+
+      uploadZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadZone.classList.add('dragover');
+      });
+
+      uploadZone.addEventListener('dragleave', () => {
+        uploadZone.classList.remove('dragover');
+      });
+
+      uploadZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+          videoInput.files = e.dataTransfer.files;
+          handleFile(e.dataTransfer.files[0]);
+        }
+      });
+    }
+
+    if (videoInput) {
+      videoInput.addEventListener('change', (e) => {
+        if (e.target.files.length) {
+          handleFile(e.target.files[0]);
+        }
+      });
+    }
+
+    function handleFile(file) {
+      if (!file.name.match(/\.(mp4|avi|mov)$/i)) {
+        alert('Please upload an MP4, AVI, or MOV video');
+        return;
+      }
+
+      fileName.textContent = file.name;
+      fileSize.textContent = formatBytes(file.size);
+
+      uploadZone.style.display = 'none';
+      previewContainer.style.display = 'block';
+      fileSelected = true;
+      updateSubmitBtn();
+    }
+
+    if (removeBtn) {
+      removeBtn.addEventListener('click', () => {
+        videoInput.value = '';
+        uploadZone.style.display = 'block';
+        previewContainer.style.display = 'none';
+        fileSelected = false;
+        updateSubmitBtn();
+      });
+    }
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // Loading state
+    const form = document.getElementById('upload-form');
+    if (form) {
+      form.addEventListener('submit', function() {
+        analyzeBtn.disabled = true;
+        analyzeBtn.textContent = 'Analyzing…';
+      });
+    }
+  </script>
+</body>
+</html>
+

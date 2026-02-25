@@ -1,0 +1,620 @@
+{% extends "base.html" %}
+
+{% block title %}Ana — Your Nutrition Assistant | Wellnix{% endblock %}
+{% block description %}Chat with Ana, your AI nutrition assistant. Tell her what ingredients you have and get personalized healthy diet suggestions.{% endblock %}
+
+{% block head %}
+<style>
+  .ana-layout {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - var(--nav-height));
+    padding-top: var(--nav-height);
+  }
+
+  .ana-header {
+    padding: var(--space-4) var(--space-6);
+    border-bottom: 1px solid var(--border-default);
+    background: var(--bg-primary);
+    flex-shrink: 0;
+  }
+
+  .ana-header-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .ana-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--gradient-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .ana-avatar svg {
+    width: 22px;
+    height: 22px;
+    color: white;
+  }
+
+  .ana-header-text h1 {
+    font-size: var(--text-lg);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .ana-header-text p {
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+    margin: 0;
+  }
+
+  .ana-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: var(--accent-primary);
+  }
+
+  .ana-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+  }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-6);
+    scroll-behavior: smooth;
+  }
+
+  .chat-messages-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .chat-msg {
+    display: flex;
+    gap: var(--space-3);
+    max-width: 88%;
+    animation: chatFadeIn 0.3s ease-out;
+  }
+
+  @keyframes chatFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .chat-msg--user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+  }
+
+  .chat-msg-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  .chat-msg--ana .chat-msg-avatar {
+    background: var(--gradient-accent);
+    color: white;
+  }
+
+  .chat-msg--user .chat-msg-avatar {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+  }
+
+  .chat-msg-bubble {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-lg);
+    line-height: 1.55;
+    font-size: 0.935rem;
+  }
+
+  .chat-msg--ana .chat-msg-bubble {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+    border-top-left-radius: 4px;
+  }
+
+  .chat-msg--user .chat-msg-bubble {
+    background: var(--accent-primary);
+    color: white;
+    border-top-right-radius: 4px;
+  }
+
+  .chat-msg-bubble h3,
+  .chat-msg-bubble h4 {
+    font-size: 0.95rem;
+    margin: var(--space-3) 0 var(--space-1);
+  }
+
+  .chat-msg-bubble h3:first-child,
+  .chat-msg-bubble h4:first-child {
+    margin-top: 0;
+  }
+
+  .chat-msg-bubble p {
+    margin: 0 0 var(--space-2);
+    color: inherit;
+  }
+
+  .chat-msg-bubble ul,
+  .chat-msg-bubble ol {
+    margin: var(--space-1) 0 var(--space-2) var(--space-5);
+  }
+
+  .chat-msg-bubble li {
+    margin-bottom: 2px;
+  }
+
+  .chat-msg-bubble strong {
+    font-weight: 600;
+  }
+
+  .chat-msg-bubble code {
+    background: rgba(0,0,0,0.06);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 0.88em;
+  }
+
+  .chat-msg-bubble hr {
+    border: none;
+    border-top: 1px solid var(--border-default);
+    margin: var(--space-3) 0;
+  }
+
+  .chat-input-area {
+    padding: var(--space-4) var(--space-6);
+    border-top: 1px solid var(--border-default);
+    background: var(--bg-primary);
+    flex-shrink: 0;
+  }
+
+  .chat-input-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-end;
+  }
+
+  .chat-input-wrap {
+    flex: 1;
+    position: relative;
+  }
+
+  .chat-input {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    resize: none;
+    min-height: 46px;
+    max-height: 140px;
+    line-height: 1.45;
+    transition: border-color var(--transition-fast);
+  }
+
+  .chat-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+
+  .chat-input::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  .chat-send-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: var(--radius-lg);
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .chat-send-btn:hover:not(:disabled) {
+    background: var(--accent-hover);
+  }
+
+  .chat-send-btn:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+
+  .chat-send-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .chat-send-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .chat-hint {
+    max-width: 820px;
+    margin: var(--space-2) auto 0;
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    text-align: center;
+  }
+
+  .chat-welcome {
+    text-align: center;
+    padding: var(--space-12) var(--space-4);
+  }
+
+  .chat-welcome-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--gradient-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--space-4);
+  }
+
+  .chat-welcome-icon svg {
+    width: 32px;
+    height: 32px;
+    color: white;
+  }
+
+  .chat-welcome h2 {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-2);
+  }
+
+  .chat-welcome p {
+    color: var(--text-secondary);
+    max-width: 460px;
+    margin: 0 auto var(--space-6);
+  }
+
+  .chat-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    justify-content: center;
+  }
+
+  .chat-suggestion-btn {
+    padding: var(--space-2) var(--space-4);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-full);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-family: var(--font-sans);
+  }
+
+  .chat-suggestion-btn:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    background: var(--accent-glow);
+  }
+
+  .typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: var(--space-3) var(--space-4);
+    align-items: center;
+  }
+
+  .typing-indicator span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--text-tertiary);
+    animation: typingDot 1.4s infinite ease-in-out;
+  }
+
+  .typing-indicator span:nth-child(2) { animation-delay: 0.16s; }
+  .typing-indicator span:nth-child(3) { animation-delay: 0.32s; }
+
+  @keyframes typingDot {
+    0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+    40% { opacity: 1; transform: scale(1); }
+  }
+
+  @media (max-width: 768px) {
+    .chat-msg { max-width: 95%; }
+    .ana-header { padding: var(--space-3) var(--space-4); }
+    .chat-messages { padding: var(--space-4); }
+    .chat-input-area { padding: var(--space-3) var(--space-4); }
+    .chat-suggestions { flex-direction: column; align-items: center; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="ana-layout">
+  <!-- Header -->
+  <div class="ana-header">
+    <div class="ana-header-inner">
+      <div class="ana-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3z"/>
+          <path d="M17 4a2 2 0 0 0 2 2c-1.5 0-2 1-2 2 0-1-0.5-2-2-2a2 2 0 0 0 2-2"/>
+        </svg>
+      </div>
+      <div class="ana-header-text">
+        <h1>Ana</h1>
+        <div class="ana-status">
+          <span class="ana-status-dot"></span>
+          <span>Nutrition Assistant &middot; Nutri AI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div class="chat-messages" id="chat-messages">
+    <div class="chat-messages-inner" id="chat-messages-inner">
+      <!-- Welcome screen -->
+      <div class="chat-welcome" id="chat-welcome">
+        <div class="chat-welcome-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3z"/>
+            <path d="M17 4a2 2 0 0 0 2 2c-1.5 0-2 1-2 2 0-1-0.5-2-2-2a2 2 0 0 0 2-2"/>
+          </svg>
+        </div>
+        <h2>Hi, I'm Ana</h2>
+        <p>
+          Tell me what ingredients you have, and I'll suggest a healthy diet plan
+          tailored to your needs. I'm powered by nutrition science from Harvard Medical School.
+        </p>
+        <div class="chat-suggestions">
+          <button class="chat-suggestion-btn" data-msg="I have chicken, rice, broccoli, and olive oil">chicken, rice, broccoli, olive oil</button>
+          <button class="chat-suggestion-btn" data-msg="I have eggs, spinach, whole wheat bread, and avocado">eggs, spinach, bread, avocado</button>
+          <button class="chat-suggestion-btn" data-msg="I have oats, banana, milk, and almonds">oats, banana, milk, almonds</button>
+          <button class="chat-suggestion-btn" data-msg="I have paneer, lentils, tomato, and basmati rice">paneer, lentils, tomato, rice</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="chat-input-area">
+    <div class="chat-input-inner">
+      <div class="chat-input-wrap">
+        <textarea
+          id="chat-input"
+          class="chat-input"
+          placeholder="Type your ingredients... e.g. chicken, rice, broccoli"
+          rows="1"
+          autocomplete="off"
+        ></textarea>
+      </div>
+      <button id="chat-send" class="chat-send-btn" disabled aria-label="Send message">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+    <div class="chat-hint">Ana uses AI to generate suggestions. Always consult a healthcare professional for medical advice.</div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  const messagesContainer = document.getElementById('chat-messages');
+  const messagesInner = document.getElementById('chat-messages-inner');
+  const welcome = document.getElementById('chat-welcome');
+  const input = document.getElementById('chat-input');
+  const sendBtn = document.getElementById('chat-send');
+  const suggestionBtns = document.querySelectorAll('.chat-suggestion-btn');
+
+  let history = [];
+  let isLoading = false;
+
+  function autoResize() {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 140) + 'px';
+  }
+
+  input.addEventListener('input', () => {
+    autoResize();
+    sendBtn.disabled = !input.value.trim() || isLoading;
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (!sendBtn.disabled) sendMessage();
+    }
+  });
+
+  sendBtn.addEventListener('click', sendMessage);
+
+  suggestionBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      input.value = btn.dataset.msg;
+      autoResize();
+      sendBtn.disabled = false;
+      sendMessage();
+    });
+  });
+
+  function scrollToBottom() {
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+  function appendMessage(role, content) {
+    if (welcome && welcome.parentNode) {
+      welcome.remove();
+    }
+
+    const wrapper = document.createElement('div');
+    wrapper.className = `chat-msg chat-msg--${role === 'user' ? 'user' : 'ana'}`;
+
+    const avatar = document.createElement('div');
+    avatar.className = 'chat-msg-avatar';
+    if (role === 'user') {
+      avatar.textContent = '{{ user.name[0].upper() if user and user.is_authenticated and user.name else "Y" }}';
+    } else {
+      avatar.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3z"/></svg>';
+    }
+
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-msg-bubble';
+
+    if (role === 'user') {
+      bubble.textContent = content;
+    } else {
+      bubble.innerHTML = markdownToHtml(content);
+    }
+
+    wrapper.appendChild(avatar);
+    wrapper.appendChild(bubble);
+    messagesInner.appendChild(wrapper);
+    scrollToBottom();
+
+    return bubble;
+  }
+
+  function showTyping() {
+    if (welcome && welcome.parentNode) welcome.remove();
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'chat-msg chat-msg--ana';
+    wrapper.id = 'typing-indicator';
+
+    const avatar = document.createElement('div');
+    avatar.className = 'chat-msg-avatar';
+    avatar.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3z"/></svg>';
+
+    const dots = document.createElement('div');
+    dots.className = 'typing-indicator';
+    dots.innerHTML = '<span></span><span></span><span></span>';
+
+    wrapper.appendChild(avatar);
+    wrapper.appendChild(dots);
+    messagesInner.appendChild(wrapper);
+    scrollToBottom();
+  }
+
+  function removeTyping() {
+    const el = document.getElementById('typing-indicator');
+    if (el) el.remove();
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text || isLoading) return;
+
+    isLoading = true;
+    sendBtn.disabled = true;
+    input.value = '';
+    autoResize();
+
+    appendMessage('user', text);
+    history.push({ role: 'user', content: text });
+
+    showTyping();
+
+    try {
+      const resp = await fetch('/api/v1/ana/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: text,
+          history: history.slice(-8)
+        })
+      });
+
+      removeTyping();
+
+      if (!resp.ok) throw new Error('Request failed');
+
+      const data = await resp.json();
+      const reply = data.reply || 'Sorry, I could not generate a response.';
+
+      appendMessage('assistant', reply);
+      history.push({ role: 'assistant', content: reply });
+    } catch (err) {
+      removeTyping();
+      appendMessage('assistant', 'Something went wrong. Please try again in a moment.');
+    }
+
+    isLoading = false;
+    sendBtn.disabled = !input.value.trim();
+    input.focus();
+  }
+
+  function markdownToHtml(md) {
+    let html = md
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+    html = html.replace(/^### (.+)$/gm, '<h4>$1</h4>');
+    html = html.replace(/^## (.+)$/gm, '<h3>$1</h3>');
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+    html = html.replace(/^---$/gm, '<hr>');
+    html = html.replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>');
+    html = html.replace(/^[-*]\s+(.+)$/gm, '<li>$1</li>');
+
+    html = html.replace(/((?:<li>.*<\/li>\s*)+)/g, (match) => {
+      return '<ul>' + match + '</ul>';
+    });
+
+    html = html.replace(/\n{2,}/g, '</p><p>');
+    html = html.replace(/\n/g, '<br>');
+    html = '<p>' + html + '</p>';
+
+    html = html.replace(/<p>\s*<(h[34]|ul|ol|hr)/g, '<$1');
+    html = html.replace(/<\/(h[34]|ul|ol)>\s*<\/p>/g, '</$1>');
+    html = html.replace(/<p>\s*<\/p>/g, '');
+
+    return html;
+  }
+
+  input.focus();
+})();
+</script>
+{% endblock %}
