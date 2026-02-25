@@ -158,15 +158,20 @@ def _call_groq(messages: List[Dict], api_key: str) -> str:
         "Content-Type": "application/json",
     }
     payload = {
-        "model": "llama3-70b-8192",
+        "model": "llama-3.3-70b-versatile",
         "messages": messages,
         "temperature": 0.45,
         "max_tokens": 1500,
     }
     try:
         resp = requests.post(url, headers=headers, json=payload, timeout=30)
-        resp.raise_for_status()
-        return resp.json()["choices"][0]["message"]["content"]
+        if not resp.ok:
+            error_detail = resp.text[:300]
+            return f"I'm sorry, I couldn't generate a response right now. (Groq returned {resp.status_code}: {error_detail})"
+        data = resp.json()
+        return data["choices"][0]["message"]["content"]
+    except requests.exceptions.Timeout:
+        return "I'm sorry, the request timed out. Please try again."
     except Exception as exc:
         return f"I'm sorry, I couldn't generate a response right now. Error: {exc}"
 
